@@ -1,0 +1,120 @@
+<?php
+    session_start();  
+    @$_SESSION["userID"] =  "tomas";
+
+    define('USER_ID',  @$_SESSION["userID"]);
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OMC STAKING</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="assets/css/basic.css">
+    <link rel="stylesheet" href="assets/css/sub.css">
+    <style type="text/css">
+        .news_content {
+            width: calc(100% - 10px);
+            height: auto;
+            padding: 4px;
+            margin: 10px 0px;
+            font-size: 12px;
+        }
+
+        .content_overflow {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+    <!-- <link rel="stylesheet" media="all and (min-width:1200px)" href="assets/css/desktop.css">
+    <link rel="stylesheet" media="all and (min-width:768px) and (max-width:1199px)" href="assets/css/laptop.css"> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./components/modules.js"></script>
+    <script type="text/javascript" src="./components/news.js"></script>
+    <script>
+        $(function () {
+
+            let userID = $("#userID").val();
+            let content_idx = $("#content_idx").val();
+            news_content("news_content", content_idx);
+
+
+            $('#btn_logout').on('click', function () {
+                logout();
+                var goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#btn_menu').on('click', function () {
+                var goUrl = "main.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#btn_back').on('click', function () {
+                // var goUrl = "index.html";
+                // $(location).attr('href', goUrl);
+                var goUrl = "news.html";
+                $(location).attr('href', goUrl);
+            });
+
+
+
+            $('#main').on('click', '.newslist', function () {
+                var thisID = $(this).attr("id");
+                var thisIdx = thisID.split("_")[1];
+
+                var goUrl = "news_content.html?idx=" + idx;
+                $(location).attr('href', goUrl);
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body style="padding: 0px; margin: 0px;background-color: #e9e9e9;">
+    <div id=" "
+        style=" width: 100%; height: 60px; top: 0px; left: 0px; background-color: blueviolet; line-height: 60px;">
+        <div id="btn_menu"
+            style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;">
+            <img src='./assets/imgs/home.png' width='26' />
+        </div>
+        <div
+            style="width: 70%; display: inline-block; text-align: center; vertical-align:top; color: #FFF; font-size: 20px;  ">
+            ORIENTALCOIN STAKING
+        </div>
+        <div id="btn_logout"
+            style="width: 10%; text-align: center; display: inline-block;color: #FFF; font-size: 22px; float: right; cursor: pointer;">
+            <img src='./assets/imgs/exit.png' width='26' />
+        </div>
+
+    </div>
+
+    <div id="main">
+        <div id="" class=""
+            style="width: 90%; margin: 40px auto;   padding: 10px 0px; font-size: 22px; border-bottom: 1px solid #afafaf;">
+            News
+        </div>
+
+        <div id="news_content" class="" style="width: 94%; margin: 10px auto; overflow-y: auto; ">
+        </div>
+
+        <div id="btn_back" class=""
+            style="width: 80px; margin-top: 20px;  font-size: 14px; float: right; /*border: 1px solid #DADADA;*/">
+            목록
+        </div>
+
+    </div>
+    <!-- <footer>3</footer> -->
+    <input type="hidden" id="content_idx" value="<?=$_GET['idx'];?>" />
+</body>
+
+</html>

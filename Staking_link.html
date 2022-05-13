@@ -1,0 +1,66 @@
+<div id="link" class="cell_link_wrap" style="margin-top: 50px;">
+    <div id="" class="cell_link_wrap" style="margin : 0px auto;">
+        <div id="N" class="  cLink">
+            <div id="" class=""><img src='/assets/imgs/wallet.png' width='30' /></div>
+            <div id="" class="">NEWS</div>
+        </div>
+        <div id="W" class="  cLink">
+            <div id="" class=""><img src='/assets/imgs/wallet.png' width='30' /></div>
+            <div id="" class="">OMC WALLET</div>
+        </div>
+    </div>
+
+    <div id="" class="cell_link_wrap" style="margin : 10px auto;">
+        <div id="I" class="  cLink">
+            <div id="" class=""><img src='/assets/imgs/wallet.png' width='30' /></div>
+            <div id="" class="">OMC ICO</div>
+        </div>
+        <div id="O" class="  cLink">
+            <div id="" class=""><img src='/assets/imgs/wallet.png' width='30' /></div>
+            <div id="" class="">ORIENTAL SERV</div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+
+
+        $("#link").on("click", ".cLink", function () {
+            var thisID = $(this).attr("id");
+            var goUrl = "";
+
+            switch (thisID) {
+                case "N": goUrl = "./news.html"; break;
+                case "W": goUrl = "https://omcwallet.net"; break;
+                case "I": goUrl = ""; break;
+                case "O": goUrl = ""; break;
+                default: return false; break;
+            }
+
+
+            $(location).attr('href', goUrl);
+
+        })
+
+
+        $('#link').on('mouseover', '.cLink', function () {
+            var thisID = $(this).attr("id");
+
+            $("#" + thisID).css("backgroundColor", "#DADADA")
+
+        });
+        $('#link').on('mouseout', '.cLink', function () {
+            var thisID = $(this).attr("id");
+
+            $("#" + thisID).css("backgroundColor", "#ffffff")
+
+        });
+
+    });
+
+
+
+
+</script>

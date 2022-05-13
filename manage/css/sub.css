@@ -1,0 +1,214 @@
+
+input[type='text']{ border:none; background-color: #dfdfdf; padding: 5px 15px;font-size: 14px; } 
+input[type='password']{ border:none; background-color: #dfdfdf; padding: 5px 15px;font-size: 14px; } 
+input[type='number']{ border:none; background-color: #dfdfdf; padding: 5px 15px;font-size: 14px; } 
+ 
+
+.main{
+    width: 90%; height: auto; margin: 10 auto; 
+}
+
+
+.cell_item{
+    width: 84%; 
+    padding: 8px;
+    margin: 5px auto;
+    border-bottom: 1px solid #dadada;
+
+}
+.cell_item:first-child{
+    margin-top: 50px;
+     border-top: 1px solid #dadada;
+    }
+
+
+.cell_item_sub{
+     width: 84%; 
+    display: none;
+ 
+    height: auto;
+    padding: 12px;
+    margin: 4px auto;
+    background-color: #EAEAEA;
+}
+ 
+
+
+.ftSize{
+    text-align: start;
+    font-size: 13px;
+}
+.ftSize_unit{
+    text-align: right;
+    font-size: 13px;
+    font-weight: bold;
+    padding : 5px;
+    background-color: #EAEAEA;
+    margin-left: 10px;
+}
+
+
+.itemfontSize{
+    text-align: start;
+    font-size: 20px;
+    font-weight: bold;
+}
+/**/
+#cbalance{
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#info_sub{
+    font-size: 13px;
+    width: 92%; 
+    padding:  12px 6px; 
+    margin-top: 20px; 
+   
+}
+
+.info_sub_cell_wrap{
+    padding:  4px 0px; 
+    border-bottom: 1px solid #dadada;
+}
+.info_sub_cell_wrap:first-child{
+    
+     border-top: 1px solid #dadada;
+    }
+
+.cell_link_wrap{ width: 94%; height: auto; display: block; margin: 10px auto;  } 
+
+.cell_link_wrap > .cLink {
+     width: 46%;
+     padding-top: 20px;
+    margin: 4px ;
+    height: 80px;
+     display: inline-block;
+     border: 1px solid #DADADA;
+     text-align: center;
+     
+}
+
+.inputFeild{
+    width: 100%;
+    border-width:0px;
+    border:none;
+    padding: 4px;
+    margin-bottom: 8px;
+}
+
+
+.cTerm{
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #000;
+    padding: 4px;
+}
+
+.divButton{
+    cursor: pointer;
+    margin: 0px auto;
+    width: 120px;
+    text-align: center;
+    border: 1px solid #000;
+    padding: 4px 16px;
+
+}
+
+
+
+input[type='text'],[type='password']{
+    border: none;
+    width: 100%;
+    height: 22px;
+    padding: 4px;
+    background-color: #EAEAEA; 
+}
+
+
+
+.cTabWrap{ 
+    width: 92%; 
+    height: auto; 
+    display: block; 
+    margin-top: 70px;
+
+} 
+
+.cTab{
+    border: 1px solid #DADADA;    
+    width: 30%;
+    height: 22px;
+    padding: 4px;
+    background-color: #EAEAEA; 
+    display: inline-block;
+     
+
+}
+
+.cTabOn{
+    border: 1px solid #DADADA; 
+     border-bottom: none;
+    width: 30%;
+    height: 22px;
+    padding: 4px;
+    background-color: #FFF; 
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;   
+    
+}
+
+.cTabTail{
+ 
+    border-bottom: 1px solid #DADADA ;
+    width: 30%;
+    height: 22px;
+    padding: 4px;
+    background-color: #FFF; 
+    display: inline-block;   
+    margin-left: -3px;
+}
+
+
+.transactionListWrap{
+    overflow-y :auto;
+    width:97%;
+    height:250px;
+
+} 
+
+.cell_listWrap{
+    width: 94%;
+    background-color: #FFF; 
+    display: block;   
+    margin: 4px auto;
+ 
+
+}
+
+.transactionList{
+    width: 96%;
+    background-color: #FFF; 
+    display: inline-block;   
+    margin: 6px auto;
+    padding: 8px 8px 14px;
+
+}
+
+.list_lable{
+    font-size: 12px;
+    width: 30%;
+    padding: 4px;
+    display: inline-block;
+}
+
+.list_inputFeild{
+    width: 60%;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block; 
+ 
+    text-align: right;
+}

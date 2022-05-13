@@ -1,0 +1,97 @@
+ 
+@media (max-width: 600px) {
+  .title {
+    font-size: 20px;
+  }
+}
+/* Mobile First */
+ 
+.title { font-size: 12px; }
+ 
+@media (min-width: 640px) {
+  .title { font-size: 14px; }
+}
+ 
+@media (min-width: 768px) {
+  .title { font-size: 16px; }
+}
+ 
+@media (min-width: 1024px) {
+  .title { font-size: 18px; }
+}
+
+/* @media (min-height: 680px), screen and (orientation: portrait) { ... }
+@media (min-width:768px) {}
+@media all and (min-width:768px) and (max-width:1080px) {} */
+body{
+    padding: 10px;
+    background-color: #099bd4;
+}
+
+ 
+#main {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+ 
+#main .contents {
+    background-color:#b4b8ff;
+}
+
+#main .sidebar {
+    background-color: #ffbecb;
+}
+
+footer {
+    font-size: 30px;
+    text-align: center;
+    background-color: #c2ebf9;
+}
+
+/*미디어 */
+@media (max-width:600px){ /*가로 너비가 600px 이하일 때 아래 스타일 적용*/
+    #main {
+        display: block;
+    }
+    #main .sidebar {
+        min-height: 0;
+    }
+}
+
+.inputFeild{
+    width: 100%;
+    border-width:0px;
+    font-size: 16px;
+    font-weight: bold;
+    border:none;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.divButton{
+  cursor: pointer;
+  margin: 0px auto;
+  width: 120px;
+  text-align: center;
+  border: 1px solid #fff;
+  padding: 4px 16px;
+  color:#fff;
+
+}
+
+.btn_group_wrap{
+  border-top: 1px solid #DADADA;
+  vertical-align:baseline; 
+  margin-top: 50px;
+  padding-top: 8px;
+}
+
+.btn_group{
+  cursor: pointer; 
+  padding: 4px 33px;
+  text-align: center; 
+  display: inline-block;
+  color:#fff;
+
+}

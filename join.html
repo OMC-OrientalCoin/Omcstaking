@@ -1,0 +1,473 @@
+<?php
+header( 'Location: join_kr.html' );
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OMC STAKING</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+
+    <link rel="stylesheet" href="/assets/css/basic.css">
+    <link rel="stylesheet" href="/assets/css/sub.css">
+
+    <style type="text/css">
+        body {
+            background-image: url("/assets/imgs/index_bg.jpg");
+        }
+
+        #nation {
+            display: none;
+            z-index: 999;
+            width: 70px;
+            height: 120px;
+            top: 70px;
+            right: 10px;
+            background-color: #FFF;
+            position: fixed;
+            font-size: 12px;
+            padding: 15px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .btn_nation {
+            padding: 4px;
+            display: block;
+            width: calc(100% - 10px);
+            height: auto;
+            border-bottom: 1px solid #dadada;
+            text-align: center;
+        }
+
+        #btn_close {
+            width: 20px;
+            height: auto;
+            padding: 4px;
+            border: 1px solid #dadada;
+            background-color: #FFF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[tyoe=text],
+        input[type=password] {
+            width: 86%;
+        }
+    </style>
+    <!-- <link rel="stylesheet" media="all and (min-width:1200px)" href="assets/css/desktop.css">
+        <link rel="stylesheet" media="all and (min-width:768px) and (max-width:1199px)" href="assets/css/laptop.css"> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/components/modules.js"></script>
+
+    <script>
+        $(function () {
+
+            let userID = "";
+            var iconPath = "/assets/imgs/";
+
+            makeNationSelect();
+
+            $("form :input").attr("autocomplete", "off");
+
+            $('#chkOmcMember').on('change', function () {
+                let state = $(this).is(':checked')
+
+                $(".form").hide();
+                if (state)
+                    $("#joinWrapOmc").show();
+                else
+                    $("#joinWrap").show();
+
+            });
+
+            $('#newUserID').on('change', function () {
+                $("#chkID").prop('checked', false);
+            });
+
+            $('#chkID').on('change', function () {
+                let userID = $('#newUserID').val();
+                let chkID_retValue = null;
+
+                if (!userID) {
+                    alert("아이디를 입력해 주세요. ");
+                    $('#newUserID').focus();
+                    return false;
+                }
+
+                chkID_retValue = Number(chkExistUserID(userID));
+
+                if (chkID_retValue > 0) {
+                    alert("이미 사용중인 아이디 입니다.\n다른 아이디로 입력하여 주세요. ");
+                    $('#userID').val("");
+                    $('#userID').focus();
+
+                } else {
+                    alert("사용가능한 아이디입니다. ");
+
+                }
+
+                $('#isUseChkID').val(chkID_retValue);
+
+
+
+
+            });
+
+            // isUseChkID(userID) {
+            $('#btn_back').on('click', function () {
+                var goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $("#joinForm").submit(function (event) {
+                event.preventDefault();
+
+                var url = "/modules/member_set.php";//$(this).attr("action");
+                var data = $(this).serialize();
+                console.log('--->', data);
+                let validationState = validation();
+                let isUseChkID = $('#isUseChkID').val();
+
+                if (validationState) {
+                    if (isUseChkID) {
+                        $.post(url, data)
+                            .done(function (data) {
+
+                                //$('#Wallet_addr').html("0xqwerqwerqwerqwerqwerqwerqwer");
+
+                                $('#btn_wrap').hide();
+                                //$('#Wallet_wrap').show();
+                                console.log('--->', data);
+                                if (patseInt(data) > 0) {
+                                    alert("가입되셨습니다. ");
+                                    $(location).attr('href', "index.html");
+                                }
+                                else
+                                    alert("등록 하지못했습니다 .\n관리지에게 문의하시기 바랍니다.");
+
+                            });
+                    } else {
+                        alert("ID중복여부를 확인하여 주십시요.");
+                        $('#isUseChkID').focus();
+                        return false;
+                    }
+
+                    return false;
+                }//validationState 
+            });
+
+
+
+            let viewFlag = false;
+            $('#btn_menu').on('click', function () {
+
+                if (!viewFlag)
+                    $("#nation").show();
+                else
+                    $("#nation").hide();
+
+                viewFlag = !viewFlag;
+            });
+
+            $('#btn_logout').on('click', function () {
+                logout();
+                var goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#btn_close').on('click', function () {
+                // var goUrl = "index.html";
+                // $(location).attr('href', goUrl);
+                $("#nation").hide();
+            });
+
+
+            $('#nation').on('click', '.btn_nation', function () {
+                var thisID = $(this).attr("id");
+                var goUrl = "join_" + thisID.toLowerCase() + ".html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#nation').on('mouseover', '.btn_nation', function () {
+                var thisID = $(this).attr("id");
+                //$("#" + thisID).css("color", "#f000ff")
+                $("#" + thisID).css("backgroundColor", "#EAEAEA")
+            });
+
+            $('#nation').on('mouseout', '.btn_nation', function () {
+                var thisID = $(this).attr("id");
+                //$("#" + thisID).css("color", "#")
+                $("#" + thisID).css("backgroundColor", "#FFF")
+            });
+
+
+
+
+        });//jq
+
+        function makeNationSelect() {
+            let _tmpVar = "";
+            let nation = new Array('EN', 'CN', 'KR', 'VN');
+
+            _tmpVar += "<option var=''>select your Nation</option>";
+            for (let i = 0; i < nation.length; i++) {
+                // const element = array[i];
+                _tmpVar += "<option var='" + nation[i] + "'>" + nation[i] + "</option>";
+            }
+
+            $("#sel_nation").html(_tmpVar)
+        }
+
+        function chkExistUserID(userID) {
+            let jURL = "/modules/chkUserID.php";
+            let params = { userID: userID };
+            var returnValue = $.ajax({
+                type: "POST",
+                url: jURL,
+                data: params,
+                async: false
+            }).responseText;
+
+            return returnValue;
+        }
+
+
+        function validation() {
+
+            let retState = false;
+
+            let userID = $('#newUserID').val();
+            let userPW = $('#newUserPW').val();
+            let userPWComp = $('#newUserPWComp').val();
+
+            let newUserName = $('#newUserName').val();
+            let newUserEmail = $('#newUserEmail').val();
+            let newUserPhone = $('#newUserPhone').val();
+
+
+            if (userID == "") {
+                alert("아이디를 입력해주새요.");
+                $('#newUserID').focus();
+                retState = false;
+
+            } else if (userPW == "") {
+                alert("비밀번호를 입력해주새요.");
+                $('#newUserPW').focus();
+                retState = false;
+
+            } else if (userPW != userPWComp) {
+                alert("비밀번호 확인이 다릅니다. 비밀번호 확인을 다시 입력 해 주새요.");
+                $('#newUserPWComp').focus();
+                retState = false;
+
+            } else if (newUserName == "") {
+
+                alert("이름을 입력해주새요.");
+                $('#newUserName').focus();
+                retState = false;
+
+            } else if (newUserPhone == "") {
+                alert("연락처를 입력해주새요.");
+                $('#newUserPhone').focus();
+                retState = false;
+
+            } else {
+
+                let _chkEmailState = validateEmail(newUserEmail);
+                let _chkPhoneState = validatePhone(newUserPhone);
+                //  let _chkPasswordState = validatePassword(userPW);
+
+                if (!_chkEmailState) {
+                    alert("Email을 정확히 입력 해 주세요.");
+                    retState = false;
+                } else if (!_chkPhoneState) {
+                    alert("연락처를 정확히 입력 해 주세요.");
+                    retState = false;
+                    // } else if (!_chkPasswordState) {
+                    //     alert("비밀번호를 정확히 입력 해 주세요.");
+                    //     retState = false;
+
+
+                } else {
+                    retState = true;
+                }
+            }
+            return retState;
+        }
+
+
+        function goHome() {
+            var goUrl = "/";
+            $(location).attr('href', goUrl);
+
+        }
+
+
+    </script>
+
+</head>
+
+<body style="padding: 0px; margin: 0px;">
+    <div id="nation">
+        <!-- <div id="" class=" " style="border: none; height: 22px; vertical-align: top; text-align: right;  ">
+            <div id="btn_close" style="float: right;">X</div>
+        </div> -->
+        <div id="EN" class="btn_nation">English </div>
+        <div id="CN" class="btn_nation">中國人 </div>
+        <div id="KO" class="btn_nation">한국어 </div>
+        <div id="VN" class="btn_nation">Tiếng Việt</div>
+    </div>
+    <div id=" "
+        style=" width: 100%; height: 60px; top: 0px; left: 0px; background-color: rgba(55, 43, 226, 0.644); line-height: 60px;">
+        <div id="btn_back"
+            style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;">
+            < </div>
+                <div
+                    style="width: 70%; display: inline-block; text-align: center; vertical-align:top; color: #FFF; font-size: 20px;  ">
+                    ORIENTALCOIN STAKING
+                </div>
+                <div id="btn_menu"
+                    style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;float: right;">
+                    <img src='/assets/imgs/btn_globe.png' width='28' />
+                </div>
+
+        </div>
+        <div id="main" style=" width: 90%; margin: 20px auto; font-size: 12px; ">
+
+            <div id="" class=""
+                style=" font-size: 22px; font-weight: bold; padding: 10px 0px; border-bottom: 1px solid #DADADA; color: #fff;">
+                JOIN
+            </div>
+
+
+
+            <div id="" class=""
+                style="width: calc( 98% - 44px); height: auto; padding: 20px 10px 50px; margin: 60px auto; background-color: #FFF;">
+                <form name="joinForm" id="joinForm" method="post" action="./modules/member_set.php">
+
+                    <div id="" class=""
+                        style="margin-top: 40px; padding: 20px; font-size: 12px; border: 1px solid #DADADA;">
+                        OMC회원으로 가입되어 있으시면<br />
+                        회원 확인을 위해 <b>비밀번호</b>와 <b>연락처</b>를 입력해주세요.<br />
+                        신규회원이시면 가입과 동시에 OMC Wallet의 지갑이 생성됩니다.<br />
+                        <b>비밀번호를 잘 보관하여 주시기 바랍니다.</b><br />
+                        비밀번호 노출 또는 분실하신 경우 OMC Staking은 책임을 지지않습니다.
+                    </div>
+
+                    <div id="" class="" style="margin-top: 20px; padding-left: 20px;">
+                        <div id="" class="">
+                            OMC 회원이십니까?
+                        </div>
+                        <div id="" class="" style="margin-top: 10px; ">
+                            <input type="checkbox" id="chkOmcMember" value="1"> 회원
+                        </div>
+                    </div>
+
+                    <div id="joinWrapOmc" class="form"
+                        style=" width: calc( 96% - 44px); display: none; margin: 40px auto;">
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="userID" name="userID" style="width: 90%;"
+                                placeholder="OMC 회원 아이디를 입력하세요.">
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="password" id="userPW" name="userPW" style="width: 90%;"
+                                placeholder="OMC 회원  비밀번호">
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="userPhone" name="userPhone" style="width: 90%;"
+                                placeholder="연락처를 입력하세요">
+                        </div>
+
+                        <div id="" class="" style="margin-top: 60px;">
+                            <div id="btn_join_omc" name="btn_join" class="divButton"> JOIN </div>
+                        </div>
+                    </div>
+
+                    <div id="joinWrap" class="form" style=" margin-top: 40px; padding-left: 15px;">
+                        <div id="" class="" style="margin-top: 1px;">
+                            <input type="text" id="newUserID" name="newUserID" placeholder="사용자 아이디"
+                                style="width: 70%;" />
+                            <span id="chkState"><input type="checkbox" id="chkID">중복확인</span>
+                            <span id="retChkState" style="display: none;">사용가능</span>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="password" id="newUserPW" name="newUserPW" placeholder="사용자 비밀번호"
+                                autocomplete="off" />
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="password" id="newUserPWComp" name="newUserPWComp"
+                                placeholder="바말번호 입력 (8자 이상 대문자,특수문자 1개 포함)" autocomplete="off" />
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="newUserName" name="newUserName" style="width: 90%;"
+                                placeholder="성명을 입력하세요">
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+
+                            <select id="sel_nation" name="nation"
+                                style="border: none; padding: 5px; width: 90%; background-color: #EAEAEA;"></select>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="newUserEmail" name="newUserEmail" style="width: 90%;"
+                                placeholder="이메일을 입력하세요" autocomplete="off" />
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="newUserPhone" name="newUserPhone" style="width: 90%;"
+                                placeholder="연락처를 입력하세요">
+                        </div>
+
+                        <div id="btn_wrap" class="" style="margin: 60px auto; text-align: center; ">
+
+                            <input type="submit" id="btn_join" name="btn_join" class="divButton" style="width: 250px;
+                                height:40px; line-height:30px; text-align: center;" value=" JOIN " />
+
+                        </div>
+
+                        <div id="Wallet_wrap" class="" style="display: none; margin-top: 10px;">
+                            <div id="" class="" style="margin-top: 10px; ">지갑주소</div>
+                            <div id="Wallet_addr" class=""
+                                style="margin-top: 10px; padding: 10px; background-color: #DADADA;">
+                                0x1234567890-</div>
+                            <div id="" class=""
+                                style="margin-top: 40px; padding: 20px; font-size: 12px; border: 1px solid #DADADA;">
+                                <b>축하드립니다.</b><br />
+                                OMC회원으로 가입되셨습니다.<br />
+                                신규회원이시면 가입과 가입과 동시에 OMC Wallet 의 지갑이 생성되었습니다.<br />
+                                <b>지갑주소를 를 잘 보관하여 주시기 바랍니다.</b><br />
+
+                            </div>
+
+                            <div id="" class="" style="margin: 60px auto; text-align: center; ">
+                                <input type="button" id="btn_join" name="btn_join" class="divButton" style="width: 250px;
+                                    height:40px; line-height:30px; text-align: center;" value=" Go HOME "
+                                    onclick="goHome()" />
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+    <input type="hidden" id="isUseChkID" />
+</body>
+
+</html>

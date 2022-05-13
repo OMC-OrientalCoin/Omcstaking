@@ -1,0 +1,33 @@
+<div id="" class="cell_wrap">
+    <div id="" class=" " style="  margin: 10px auto;">
+        스테이킹 가능한 수량
+    </div>
+
+    <div id="omc_balance" class=""
+        style="margin: 30px auto;font-size: 16px; font-weight: bold; text-align: right; padding-right: 5px;"> </div>
+
+    <div id="" class="cell_95p_blk" style="font-size: 12px; margin: 30px auto; background-color: #fff; padding: 20px;">
+        OMC 전송 신청 확인 후에 잔고 수량에 반영됩니다.<br />
+        평일:9:30~17:30PM에 신청한 것은 30분 이내 반영.<br />
+        토요일/일요일은 24시간 후 반영됩니다.<br />
+
+    </div>
+</div>
+
+<style type="text/css">
+    .omcWalletAddr {
+        padding: 4px;
+        display: block;
+        border: 1px solid #DADADA;
+        margin: 4px;
+    }
+</style>
+
+<script type="text/javascript" src="./components/staking.js"></script>
+<script>
+    $(function () {
+        let userID = $('#userID').val();
+        incomeData("omc_balance", userID);
+
+    }); 
+</script>

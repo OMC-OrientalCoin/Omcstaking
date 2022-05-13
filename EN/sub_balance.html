@@ -1,0 +1,33 @@
+<div id="" class="cell_wrap">
+    <div id="" class=" " style="  margin: 10px auto;">
+        Quantity that can be staked
+    </div>
+
+    <div id="omc_balance" class=""
+        style="margin: 30px auto;font-size: 16px; font-weight: bold; text-align: right; padding-right: 5px;"> </div>
+
+    <div id="" class="cell_95p_blk" style="font-size: 12px; margin: 30px auto; background-color: #fff; padding: 20px;">
+        After confirming the application for OMC transfer, it will be reflected in the balance amount.<br />
+        Applications submitted on weekdays from 9:30 to 17:30 PM will be reflected within 30 minutes.<br />
+        Saturday/Sunday will be reflected after 24 hours.<br />
+
+    </div>
+</div>
+
+<style type="text/css">
+    .omcWalletAddr {
+        padding: 4px;
+        display: block;
+        border: 1px solid #DADADA;
+        margin: 4px;
+    }
+</style>
+
+<script type="text/javascript" src="/components/staking.js"></script>
+<script>
+    $(function () {
+        let userID = $('#userID').val();
+        incomeData("omc_balance", userID);
+
+    }); 
+</script>

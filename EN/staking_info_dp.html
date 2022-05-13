@@ -1,0 +1,93 @@
+<div id="" class="" style="width: 96%; height: auto; margin: 0px auto;">
+
+    <div id="" class="cell_wrap" style="margin: 50px auto;  color: #fff;">
+        <div id="todayDateViewDp" class=""
+            style="width:54%; display: inline-block; margin-bottom: 20px ; font-size: 12px;"> </div>
+        <div id="" class=" ">
+            <div id="si_deposit_calc" class=""
+                style="width: 70%;font-size: 32px; font-weight: bold; text-align: right; padding: 4px 0px 20px; display: inline-block;">
+            </div>
+            <div id=" " class="" style="width: 28%;   padding: 4px 0px 20px; display: inline-block;">
+                OMC
+            </div>
+        </div>
+        <div id=" " class="" style="width: 100%;font-size: 15px; border-top: 1px solid #DADADA; padding: 0px;">
+            <!-- <div id="todayDateViewDp" class="" style="width:54%; display: inline-block;"> </div>
+           <div id="" class="" style="width: 57%;margin-left: 10px; display: inline-block;">
+                <div id="" class="" style="width: 33%;display: inline-block;">만기금액 : </div>
+                <div id="total_balance" class="" style="width:54%;text-align: right;display: inline-block;">0.000</div>
+            </div> -->
+            <div id="" class="" style="width:50%;display: inline-block; ">
+                <div id="" class="" style="width:10%;display: inline-block;">principal: </div>
+                <div id="si_deposit_div" class="" style="width:50%;text-align: right;display: inline-block;">0.000</div>
+                <div id=" " class="" style="width:7%;text-align: right;display: inline-block;">omc</div>
+            </div>
+            <div id="" class="" style="width:50%;display: inline-block; float: right;">
+                <div id="" class="" style="width:15%;display: inline-block;">Earn:</div>
+                <div id="sum_earned" class="" style="width:35%;text-align: right;display: inline-block;">0.000</div>
+                <div id="" class="" style="width:6%;text-align: right;display: inline-block;">omc</div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<input type="hidden" id="userID" value="<?=$_POST['userID'];?>" />
+<input type="hidden" id="deposit_day_dp" />
+<input type="hidden" id="deposit_period_dp" />
+<input type="hidden" id="secAccumulate" />
+<input type="hidden" id="secAccumulate_100" />
+<input type="hidden" id="nowTimeStamp" />
+<input type="hidden" id="preAccumulateVal" />
+<input type="hidden" id="si_deposit" />
+<input type="hidden" id="StakingRecTimeStamp" />
+<input type="hidden" id="nowTimeStamp" />
+
+<link rel="stylesheet" href="/assets/css/sub.css">
+<script type="text/javascript" src="/components/staking.js"></script>
+<script>
+    $(function () {
+
+        let _userID = $("#userID").val();
+        info_staking(_userID);
+
+        let _deposit = $("#si_deposit").val();
+        if (_deposit > 0) {
+            let _deposit_day = $("#deposit_day_dp").val();
+            let _secAccumulate = parseFloat($("#secAccumulate").val());
+            let _secAccumulate_100 = parseFloat($("#secAccumulate_100").val());
+            let _period = parseInt($("#deposit_period_dp").val());
+
+            let _calcRatio = 0;
+
+            if (_period < 9) //8개월
+                _calcRatio = _secAccumulate;
+            else
+                _calcRatio = _secAccumulate_100;
+
+
+            let _StakingRecTimeStamp = $("#StakingRecTimeStamp").val();
+            let _sumDP = accumulateDP(_deposit, _StakingRecTimeStamp, _calcRatio)
+
+            //console.log(_period + "|" + _calcRatio + "|" + _sumDP + "|" + _secAccumulate + "|" + _secAccumulate_100)
+            $("#si_deposit_calc").html(addComma(_sumDP.toFixed(3)))
+
+
+            let _Earned = calcEarned(_sumDP, _deposit)
+            $("#sum_earned").html(addComma(_Earned.toFixed(3)))
+
+
+            // setInterval(set_time_remaining(timeRemaining), 1000);
+            var interval = setInterval(function () {
+                $("#todayDateViewDp").html(todayF());
+                let _sumDPInterval = accumulateDP(_deposit, _StakingRecTimeStamp, _calcRatio);
+                $("#si_deposit_calc").html(addComma(_sumDPInterval.toFixed(3)))
+
+                let _EarnedInterval = calcEarned(_sumDPInterval, _deposit)
+                $("#sum_earned").html(addComma(_EarnedInterval.toFixed(3)))
+
+            }, 1000);
+        }
+
+    });
+</script>

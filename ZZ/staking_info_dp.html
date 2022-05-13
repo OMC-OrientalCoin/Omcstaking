@@ -1,0 +1,40 @@
+<div id="" class="" style="width: 96%; height: auto; margin: 0px auto;">
+    <div id="" class="cell_wrap" style="margin: 50px auto;  color: #fff;">
+        <div id="" class=" ">
+            <div id="si_deposit" class=""
+                style="width: 70%;font-size: 32px; font-weight: bold; text-align: right; padding: 4px 0px 20px; display: inline-block;">
+            </div>
+            <div id=" " class="" style="width: 28%;   padding: 4px 0px 20px; display: inline-block;">
+                OMC
+            </div>
+        </div>
+        <div id=" " class="" style="width: 100%;font-size: 15px; border-top: 1px solid #DADADA; padding: 0px;">
+            <div id="" class="" style="width: 57%;margin-left: 10px; display: inline-block;">
+                <div id="" class="" style="width: 33%;display: inline-block;">가용금액 : </div>
+                <div id="income_balance" class="" style="width:54%;text-align: right;display: inline-block;">0.000</div>
+            </div>
+            <div id="" class="" style="width:40%;display: inline-block; float: right;">
+                <div id="" class="" style="width:30%;display: inline-block;">적립 : </div>
+                <div id="sum_earned" class="" style="width:60%;text-align: right;display: inline-block;">0.000</div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<input type="hidden" id="userID" value="<?=$_POST['userID'];?>" />
+<input type="hidden" id="ratio" />
+<link rel="stylesheet" href="/assets/css/sub.css">
+<script type="text/javascript" src="/components/staking.js"></script>
+<script>
+    $(function () {
+
+        let _userID = $("#userID").val();
+
+        info_staking(_userID);
+        info_income(_userID)
+
+    });
+
+
+</script>

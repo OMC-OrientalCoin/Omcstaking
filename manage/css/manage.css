@@ -1,0 +1,61 @@
+.wp_fenceWrap{width: calc(800px - 44px); padding:20px;   background-color: #fff;}
+.wp_wrap{width:calc(100% - 20px);;/* border-bottom: 1px solid #bababa; */padding:4px; margin: 4px; }
+#wp_title{font-size: 22px; font-weight: bold; padding: 8px; border-bottom: 1px solid #dadada;}
+ 
+	.wp_cell_30p{width: calc(30% - 44px); padding: 20px; display: inline-block; vertical-align:  top;}
+	.wp_cell_70p{width: calc(70% - 44px); padding: 20px; display: inline-block;}
+
+	input[type='text']{ width: calc(100% - 34px); border:none; background-color: #DADADA; padding: 5px 15px;font-size: 14px; } 
+
+
+
+.wp_cell_title{font-size: 22px; font-weight: bold; padding: 8px; display:  block; border-bottom: 1px solid #dadada;}
+.wp_cell_h{width: calc(100% - 50px);  height: 60% ;margin: 4px; padding: 20px; display: block ;background-color:   #dadada;}
+ 
+.wp_btn_cell{width: 120px; height: 32px; font-size: 14px; font-weight: bold; padding: 4px; display: block ; border: 1px solid #dadada; cursor: pointer; text-align: center; line-height: 32px;}
+
+#modal_fenceWrap{
+	z-index: 999;
+	width: calc(100%-44px);
+	padding: 20px;
+	margin: 10px auto;
+}
+ #modal_workplaceWrap{
+ 	/*display: none;*/
+ 	width: 100%;
+	padding: 20px;
+ }
+ 
+ 
+ .modal_btn_cell{margin : 20px auto; width: 200px; height: 34px; line-height: 34px; text-align: center; border: 1px solid #dadada; cursor: pointer; }
+.modal_cell_lable{ width: calc(15% - 16px); display: inline-block; font-size: 12px; font-weight: bold; padding: 2px; /*border-bottom: 1px solid #dadada;*/}
+.modal_cell_inputFeild{ width: calc(85% - 8px); display: inline-block;  padding: 3px; /*border-bottom: 1px solid #dadada;*/}
+.modal_cell_wrap{width: calc(100% - 20px);  height: auto ;margin: 4px; padding: 4px; display: block ;/*background-color:   #dadada;*/}
+
+ 
+#content_fence_wrap {width: 100%; height: auto;    display: block;}
+.content_wrap{width: 80%; display: block; margin: 20px auto; border-bottom: 1px solid #000;  display: block; }
+ #section_title{width: 85%; font-size: 28px; font-weight: bold;   display: inline-block;}
+
+
+
+.ccell_wrap{width: calc(80% - 10px);display: block;  padding: 4px; margin: 4px ; border-bottom: 1px solid #dadada;}
+
+.cell_5p_dib{ width: calc(5% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_6p_dib{ width: calc(6% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_7p_dib{ width: calc(7% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_8p_dib{ width: calc(8% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_9p_dib{ width: calc(9% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_10p_dib{width: calc(10% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_11p_dib{width: calc(11% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_12p_dib{width: calc(12% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_13p_dib{width: calc(13% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_14p_dib{width: calc(14% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_15p_dib{width: calc(15% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_16p_dib{width: calc(16% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_17p_dib{width: calc(17% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_18p_dib{width: calc(18% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+.cell_19p_dib{width: calc(19% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+
+.cell_20p_dib{width: calc(20% - 8px); padding: 4px; display: inline-block; vertical-align:  top;}
+

@@ -1,0 +1,223 @@
+<div id="" class="cell_wrap" style="font-family: 12px; width: calc(100% - 22px); height: auto;  padding: 10px;">
+
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='cell_30p_dib' style=' display: inline-block;width:24%;font-size: 12px;'> 철수 가능 수량 </div>
+        <div id='withdraw_total_balance' class='cell_70p_dib data_block'
+            style='width:100%; text-align:right; display: inline-block;font-size: 14px; font-weight: bold;'> </div>
+    </div>
+
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='cell_30p_dib' style=' display: inline-block;width:24%;font-size: 12px;'> 철수 가능 일자 </div>
+        <div id='withdraw_date' class='cell_70p_dib data_block'
+            style='width:100%; text-align:right; display: inline-block;font-size: 14px; font-weight: bold;'> </div>
+    </div>
+
+    <div id='' class='cell_p_wrap'
+        style='display:none; width:calc(90% - 26px); height:auto; font-size: 14px; margin: 12px auto;   padding:12px;'>
+
+        <div id='' class='cell_p_wrap'>
+            <div id='' class='cell_30p_dib' style=' display: inline-block;width:24%;'> 수탁 기간 </div>
+            <div id='deposit_date' class='cell_70p_dib data_block'
+                style='width:73%; text-align:right; display: inline-block;'> </div>
+        </div>
+        <div id='' class='cell_p_wrap'>
+            <div id='' class='cell_30p_dib' style=' display: inline-block;width:24%;'> 기 간 </div>
+            <div id='deposit_period' class='cell_70p_dib data_block'
+                style='width:73%; text-align:right; display: inline-block;'> </div>
+        </div>
+        <div id='' class='cell_p_wrap'>
+            <div id='' class='cell_30p_dib' style=' display: inline-block;width:24%;'> 이 율 </div>
+            <div id='earned' class='cell_70p_dib data_block'
+                style='width:73%; text-align:right; display: inline-block;'> </div>
+        </div>
+    </div>
+
+
+
+    <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 20px;">
+        OMC철수 지갑주소
+    </div>
+    <div id="div_account" class="cell_wrap" style="margin-top: 6px; ">
+        <input type="text" id="userAddr" name="userAddr" placeholder="OMC 지갑주소를 입력해주세요" />
+    </div>
+
+
+    <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 20px;">
+        철수 신청 수량 (최저수량 :10,000OMC )
+    </div>
+    <div id="div_account" class="cell_wrap" style="margin-top: 6px; ">
+        <input type="number" id="deposit_amount" name="deposit_amount" value="" placeholder="숫자만 입력가능합니다." />
+    </div>
+
+
+
+    <div id="" class="" style="margin-top: 30px; ">
+        <div id="btn_request" name="btn_request" class="divButton"> 철수 신청 </div>
+    </div>
+
+    <div id="" class="" style="margin-top: 30px; background-color: #fff; padding: 20px;font-size: 12px;">
+        해지 신청은 신청하신 날짜의 다음날 인출 가능합니다.<br />
+    </div>
+</div>
+<input type='hidden' id='totalAmount' />
+<style type="text/css">
+    input[type='text'] {
+        width: 100px;
+        border: none;
+        padding: 4px;
+        width: 100%;
+        background-color: #fff;
+
+    }
+
+    input[type='number'] {
+        width: 100px;
+        border: none;
+        padding: 4px;
+        width: 100%;
+        background-color: #fff;
+
+    }
+</style>
+
+<input type="hidden" id="cr_balance" value="23000" />
+<input type="hidden" id="_contract_period" value="20220611" />
+<input type="hidden" id="_omcStaking_idx" value="1" />
+
+<script type="text/javascript" src="./components/staking_info.js"></script>
+<script type="text/javascript" src="./components/staking.js"></script>
+<script>
+    $(function () {
+
+        let _userID = $("#userID").val();
+
+        getWithdrawState(_userID);
+
+        $('#btn_request').on('click', function () {
+
+            let onDate = getTerm(1);
+            var chkDate = onDate.replace(/-/gi, "");
+            let _contract_period = $('#_contract_period').val();
+
+            let deposit_amount = $('#deposit_amount').val();
+            let userAddr = $('#userAddr').val();
+
+
+            if (userAddr == "") {
+                alert("받으실 지갑 주소를 입력하세요");
+                $('#userAddr').focus();
+                return false;
+
+            } else if (deposit_amount == "") {
+                alert("철수 수량을 입력하세요");
+                $('#deposit_amount').focus();
+                return false;
+            } else {
+
+                if (parseFloat(deposit_amount) < 10000) {
+                    alert("철수 수량은 10,000 OMC부터입니다.");
+                    $('#deposit_amount').focus();
+                    return false;
+                } else {
+                    let total_balance = parseFloat($('#total_balance').html());
+
+                    if (total_balance < deposit) {
+                        alert("철수 수량이 부족합니다.");
+                        $('#deposit').focus();
+                        return false;
+                    } else {
+                        alert("약정기간을 확인 중입니다.\n약정기간 이후 해지 자능합니다.")
+                    }
+                }
+            }
+            //     chkWithdrawState(userID)
+            // } else if (parseInt(_contract_period) > parseInt(chkDate)) {
+            //     alert("약정기간이 지나지 않았습니다.\n약정기간 이후 해지 자능합니다.")
+            //     return false;
+            /*
+            if (parseInt(_contract_period) > parseInt(chkDate)) {
+                alert("약정기간이 지나지 않았습니다.\n약정기간 이후 해지 자능합니다.")
+                return false;
+ 
+                if (confirm(onDate + "일자로 해지 신청하시겠습니까?\n확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+                    // 확인(예) 버튼 클릭 시 이벤트
+ 
+                    //해지신청
+                    let _tmpMonth = $('#selMonth').val();
+                    selMonth = _tmpMonth.split("_")[1];
+                    let selAccount = $('#selAccount').val();
+ 
+                    let _omcStaking_idx = $('#_omcStaking_idx').val();
+ 
+                    let sendQty = $('#sendQty').val();
+                    let chkState = chkParams(selMonth, selAccount)
+ 
+                    if (chkState == true) {
+                        var url = "./modules/omcStaking_outcome.php";
+                        var params = {
+                            userID: userID,
+                            omcStaking_idx: _omcStaking_idx,
+                            amount: selAccount
+ 
+                        };
+                        console.log('params--->', params);
+ 
+ 
+ 
+                        $.post(url, params).done(function (data) {
+                            console.log('--->', data);
+                            alert("신청되었습니다." + data)
+                            // let tmpUrl = "index.htm?state=C&book_idx=" + book_idx;//+"&chapter_idx="+chapter_idx; 	
+                            // $(location).attr('href', tmpUrl);
+                        });
+ 
+                        alert("확인(예) 버튼")
+                    } else {
+                        // 취소(아니오) 버튼 클릭 시 이벤트
+                        alert("취소(아니오)를 선택하셨습니다.");
+                        return false;
+                    }
+                }
+            
+            */
+
+        });
+
+    });//jq
+
+
+
+    function getWithdrawState(userID) {
+        let retState = false;
+        let obj = getStakingData_one(userID);
+        let balance = obj[0].balance;
+        let withdraw_date = obj[0].deposit_date;
+
+        $("#withdraw_total_balance").html(addComma(balance) + " OMC");
+        $("#withdraw_date").html(withdraw_date);
+    }
+
+
+    function chkWithdrawState(userID) {
+        let retState = false;
+        let obj = getStakingData_one(userID);
+
+
+        let timestampNow = + new Date();
+        //timestamp = new Date().getTime();
+
+        let _tmpDate = obj[0].deposit_date;
+        _tmpDate = _tmpDate.split(" ")[0];
+        _tmpDate = _tmpDate.split("-");
+        let newDate = new Date(_tmpDate[0], _tmpDate[1] - 1, _tmpDate[2]);
+
+        let depositDate = newDate.getTime();
+        console.log(obj[0].deposit_date + "|" + timestampNow + "|" + depositDate);
+
+        if (timestampNow < depositDate)
+            retState = true;
+
+        return retState;
+    }
+
+</script>

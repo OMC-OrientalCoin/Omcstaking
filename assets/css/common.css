@@ -1,0 +1,82 @@
+.wrap{width:100%;border-bottom: 1px solid #bababa; padding:4px 0px;  }
+.cell_inline_block{display: inline-block; border-right: 1px solid #838383; text-align: center; font-size: 14px;}
+
+input{ border:none; background-color: #dfdfdf; padding: 5px 15px;font-size: 14px; } 
+
+.data_block{
+	font-weight: bold;background-color: #b6b5b5;text-align: right; padding-right: 10px;
+}
+
+.fence{width: calc(100% - 40px); height: auto;  display: block;   margin: 40px auto;}
+.wrap{width:100%;border-bottom: 1px solid #bababa; padding:4px 0px;   }
+.dib{display: inline-block;    font-size: 14px; padding-left: 2px;}
+
+.line_box{ border : 1px solid #bababa;}
+.line_bt{ border-top: 1px solid #bababa;}
+.line_bb{ border-bottom: 1px solid #bababa;}
+ 
+.line_bl{ border-left: 1px solid #bababa;}
+.line_br{ border-right: 1px solid #bababa;}
+
+.cell_wrap{width:calc(100% - 44px); height: auto; vertical-align: top; display: block;  padding:10px 20px;   }
+.cell_wrap2{width:calc(100% - 10px); height: auto; vertical-align: top; display: block;  padding:4px;   }
+.cell_2{width: 2%; height: auto; }
+.cell_3{width: 3%; height: auto; }
+.cell_4{width: 4%; height: auto; }
+.cell_5{width: 5%; height: auto; }
+.cell_6{width: 6%; height: auto; }
+.cell_7{width: 7%; height: auto; }
+.cell_8{width: 8%; height: auto; }
+.cell_9{width: 9%; height: auto; }
+.cell_10{width: 10%; height: auto; }
+.cell_11{width: 11%; height: auto; }
+.cell_12{width: 12%; height: auto; }
+.cell_13{width: 13%; height: auto; }
+.cell_14{width: 14%; height: auto; }
+.cell_15{width: 15%; height: auto; }
+.cell_16{width: 16%; height: auto; }
+.cell_17{width: 17%; height: auto; }
+.cell_18{width: 18%; height: auto; }
+.cell_19{width: 19%; height: auto; }
+.cell_20{width: 20%; height: auto; }
+.cell_21{width: 21%; height: auto; }
+.cell_22{width: 22%; height: auto; }
+.cell_23{width: 23%; height: auto; }
+.cell_24{width: 24%; height: auto; }
+.cell_25{width: 25%; height: auto; }
+.cell_26{width: 26%; height: auto; }
+.cell_27{width: 27%; height: auto; }
+.cell_28{width: 28%; height: auto; }
+.cell_29{width: 29%; height: auto; }	
+.cell_30{width: 30%; height: auto; }
+.cell_31{width: 31%; height: auto; }
+.cell_32{width: 32%; height: auto; }
+.cell_33{width: 33%; height: auto; }
+.cell_34{width: 34%; height: auto; }
+.cell_35{width: 35%; height: auto; }
+.cell_36{width: 36%; height: auto; }
+.cell_37{width: 37%; height: auto; }
+.cell_38{width: 38%; height: auto; }
+.cell_39{width: 39%; height: auto; }
+.cell_40{width: 40%; height: auto; }
+.cell_41{width: 41%; height: auto; }
+.cell_42{width: 42%; height: auto; }
+.cell_43{width: 43%; height: auto; }
+.cell_44{width: 44%; height: auto; }
+.cell_45{width: 45%; height: auto; }
+.cell_46{width: 46%; height: auto; }
+.cell_47{width: 47%; height: auto; }
+.cell_48{width: 48%; height: auto; }
+.cell_49{width: 49%; height: auto; }
+.cell_50{width: 50%; height: auto; }
+.cell_60{width: 60%; height: auto; }
+.cell_70{width: 70%; height: auto; }
+.cell_80{width: 80%; height: auto; }
+.cell_90{width: 90%; height: auto; }
+
+input{ border:none; background-color: #DADADA; padding: 5px ;font-size: 14px; } 
+
+.modal{display:none;position: absolute; z-index: 9999; top: 0px; left: 0px;width: 100%; height: 100%; background:rgba(128,128,128,0.7);}
+.modal_content{width: calc(1000px - 44px); height: auto; min-height: 800px; padding: 20px;  background-color: #fff; margin: 30px auto;}
+
+.btn_group{width: 120px; height: auto; display: block;   padding : 6px 20px;  text-align: center;   cursor: pointer; border : 1px solid #DADADA; }

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+    <style type="text/css">
+        .wrap_fence {
+            width: 96%;
+            height: auto;
+            padding: 10px;
+            margin: 30px auto;
+        }
+        
+        .wrap_block {
+            width: 96%;
+            height: auto;
+        }
+        
+        .wrap_section {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #dadada;
+            padding: 4px 0px;
+            margin: 4px 0px;
+        }
+        
+        .cell_15p {
+            width: 15%;
+            display: inline-block;
+        }
+        
+        .cell_85p {
+            width: 15%;
+            display: inline-block;
+        }
+        
+        .btn {
+            width: 100px;
+            height: auto;
+            text-align: center;
+            padding: 4px;
+            margin: 10px auto;
+            cursor: pointer;
+            border: 1px solid #dadada;
+        }
+
+        input[type='text']{
+            border: none;
+            padding:6px;
+            background-color: #DADADA;
+        }
+
+        select{
+            border: none;
+            padding:4px;
+            background-color: #DADADA;
+            width: 180px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(function() {
+
+
+            $('#btn').on('click', function() {
+               $("#getToday").html(getDate());
+               let balance =$('#balance').val();
+               let selterm = $('#selterm').val();
+               let settlement_date = $('#expiry_date').html();
+
+               if(balance == ""){
+                alert("금액입력 에러")
+                $('#balance').focus();
+                return false;
+            }
+            else  if(selterm == ""){
+                alert("기간설정")
+                $('#selterm').focus();
+                return false;
+            }
+            else
+            {
+
+                let startDate = $("#getToday").html();
+                let term = "";
+                let expiry_date = "";
+
+                balance =parseInt( $('#balance').val());
+                seltermValue = parseInt(selterm);
+
+                switch(seltermValue)
+                {
+                    case 4 : term = 120; break;
+                    case 8 : term = 240; break;
+                    case 12 : term = 365; break;
+
+                }
+
+
+                expiry_date =  getCalcDate(startDate, term)
+                $("#expiry_date").html(expiry_date);
+
+
+                let resObject = calcDayFunc(balance, expiry_date, selterm);
+                displayF(resObject)
+
+
+            }
+
+        });
+
+
+            setInterval( interval_set, 1000 );
+
+        });
+
+        function interval_set() {
+         let tempValue= $('#tempValue').val();
+         let rsValue = $('#rs').html();
+
+         if(isNaN(tempValue)==true){
+          tempValue =  0;
+        }
+
+      interval_calc(tempValue, rsValue);
+
+  }
+
+  function interval_calc(tempValue,  rsValue) {
+
+    tempValue = parseFloat(tempValue);
+    rsValue = parseFloat(rsValue);
+    let _Value =  0;
+
+    if(isNaN(tempValue)==true){
+      _Value =  rsValue;
+  }
+  else{
+   _Value =  tempValue  + rsValue;
+   $("#tempValue").val(_Value);
+}
+
+document.getElementById("amount").innerHTML   = _Value.toFixed(7);
+}
+
+
+
+
+
+function getDate() {
+    let today = new Date();
+
+            let year = today.getFullYear(); // 년도
+            let month = today.getMonth() + 1; // 월
+            let date = today.getDate(); // 날짜
+            let day = today.getDay(); // 요일
+
+            let retDate = year + '-' + month + '-' + date ;//+" "+today;
+
+
+            return retDate;
+
+        }
+
+
+
+        function getCalcDate(sDay, term) {
+
+            let arrDay = sDay.split("-");
+
+            let date = new Date(arrDay[0], arrDay[1] -1, arrDay[2]);
+
+            let timestamp = date.setDate(date.getDate() + term);
+            let expiry_date = new Date(timestamp).toISOString().split("T")[0];
+            return expiry_date;
+
+        }
+
+
+
+        function displayF(gObject) {
+
+            $('#mb').html(gObject.mb);
+            $('#term').html(gObject.term);
+            $('#ratio').html(gObject.ratio +"%");
+            $('#dividend').html(gObject.dividend);
+            $('#rd').html(gObject.rd);
+            $('#rh').html(gObject.rh.toFixed(5));
+            $('#rm').html(gObject.rm.toFixed(5));
+            $('#rs').html(gObject.rs.toFixed(7));
+            $('#tempValue').val(gObject.rs);
+            $('#elapsed_days').html(gObject.elapsed_days);
+        }
+
+
+
+        function calcDayFunc(balance, settlement_date, mterm) {
+
+            let ratio =  0;
+
+
+            mterm =parseInt( mterm);
+            switch(mterm)
+            {
+                case 4 :  ratio =  0.3 ; term = 120;   break;
+                case 8 :  ratio =  0.6 ; term = 240; break;
+                case 12 : ratio =    1 ; term = 365; break;
+            }
+
+            let dividend = balance * ratio; //이자
+
+
+            let TimeStamp_deposit_date = new Date(settlement_date).getTime();
+            let TimeStamp_today = new Date().getTime();
+
+            let calcTime = TimeStamp_today - TimeStamp_deposit_date;
+            let calcDay = Math.ceil(calcTime / (1000 * 60 * 60 * 24));
+            let elapsed_days  = term + calcDay - 1; //경과일
+
+
+            let daily_amount  = dividend /  term;
+            let hour_amount   =   daily_amount / 24 ;
+            let minit_amount  =  hour_amount /  60  ;
+            let sec_amount    =  minit_amount / 60;
+
+
+            let tmpData = balance / calcDay;
+            let calc_earned = tmpData * calcDay;
+
+            let calcRatio = balance * ratio
+
+           // $("#remakes").html("경과일 " + elapsed_days +" | 하루 지급액  "+daily_amount )
+
+            let retObject = { // 객체
+                mb: balance.toFixed(3),
+                term: term,
+                ratio : ratio * 100,
+                dividend: dividend,
+                rd: daily_amount ,
+                rh: hour_amount,
+                rm: minit_amount ,
+                rs: sec_amount,
+                elapsed_days: elapsed_days
+            };
+
+            /* let retObject = {     // 객체
+             	sum_earned: calc_earned.toFixed(3),
+             	si_earned: tmpData.toFixed(3),
+             	si_elapsed_days: calcDay
+             };
+             */
+             return retObject;
+
+         }
+     </script>
+
+ </head>
+
+ <body>
+    <div id="" class="wrap_fence" style="">
+
+         <div id="" class="wrap_block" style="font-size: 22px;font-weight: bold; margin-bottom: 20px;">
+            배당 계산 폼
+         </div>
+        <div id="" class="wrap_block" style="">
+            <div id="" class="wrap_section" style="">
+                <div id="" class="cell_15p" style="">금액</div>
+                <div id="" class="cell_85p" style=""><input type="text" id="balance" name="balance" /></div>
+            </div>
+            <div id="" class="wrap_section" style="">
+                <div id="" class="cell_15p" style="">기간</div>
+                <div id="" class="cell_85p" style="">
+                    <select id="selterm">
+                      <option value="">::: 선택 ::: </option>
+                      <option value="4">4개월</option>
+                      <option value="8">8개월</option>
+                      <option value="12">12개월</option>
+                  </select>
+              </div>
+          </div>
+          <div id="" class="" style="">
+            <div id="btn" class="btn"> 계산</div>
+        </div>
+    </div>
+    <div id="" class="wrap_block" style="background-color: #eaeaea; height: auto;  padding: 20px 0px;">
+
+     <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">예탁일</div>
+        <div id="getToday" class="cell_85p" style=""></div>
+    </div>
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">만료일</div>
+        <div id="expiry_date" class="cell_85p" style=""></div>
+    </div>
+
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">원금</div>
+        <div id="mb" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">예탁기간</div>
+        <div id="term" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">배당률</div>
+        <div id="ratio" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">배당</div>
+        <div id="dividend" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">일일</div>
+        <div id="rd" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">시간</div>
+        <div id="rh" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">분딩</div>
+        <div id="rm" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="">
+        <div id="" class="cell_15p" style="">초당</div>
+        <div id="rs" class="cell_85p" style=""></div>
+    </div>
+    <div id="" class="wrap_section" style="margin-top: 20px;">
+        <div id="" class="cell_15p" style="">경과일</div>
+        <div id="elapsed_days" class="cell_85p" style=""></div>
+    </div>
+
+    <div id="" class="wrap_section" style="margin-top: 20px;">
+        <div id="" class="cell_15p" style="">초당 누적액</div>
+        <div id="amount" class="cell_85p" style=""></div>
+    </div>
+</div>
+<div id="" class="wrap_block" style=" ">
+    <div id="remakes" class="wrap_section" style=""> </div>
+</div>
+
+<input type="hidden" id="tempValue">
+</body>
+
+</html>

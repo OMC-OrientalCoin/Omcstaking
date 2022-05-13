@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="assets/css/basic.css">
+<div id="item" class="cItem"></div>
+
+<script>
+    $(function () {
+
+        const _jsonArray = makeJsonItem()
+        makeDivItem("item", _jsonArray);
+
+        var iconPath = "/assets/imgs/";
+        var arrowIcon = iconPath + "arrow-down.png";
+        var arrowIcon_close = iconPath + "arrow-up.png";
+
+
+        let preItemNum = "";
+        $('#item').on('click', ".cell_item", function () {
+            var thisID = $(this).attr("id");
+            var tmpIdx = thisID.split("_")[1];
+            var tmpSub = thisID.split("_")[2];
+
+            $(".cell_item_sub").hide();
+
+            if (preItemNum == tmpIdx) {
+                $("#item_sub_" + tmpIdx).hide();
+                $("#arrowIcone_" + tmpIdx).attr("src", arrowIcon);
+                tmpIdx = "";
+            } else {
+
+                loadPage(tmpIdx, tmpSub)
+                $("#item_sub_" + tmpIdx).show();
+                $("#arrowIcone_" + tmpIdx).attr("src", arrowIcon_close)
+            }
+
+            preItemNum = tmpIdx;
+        });
+
+        $('#item').on('mouseover', '.cell_item', function () {
+            var thisID = $(this).attr("id");
+            $("#" + thisID).css("backgroundColor", "#DADADA");
+
+        });
+        $('#item').on('mouseout', '.cell_item', function () {
+            var thisID = $(this).attr("id");
+
+            $("#" + thisID).css("backgroundColor", "#ffffff");
+        });
+
+    });
+
+    function loadPage(index, sub) {
+
+        let loadPage = "sub_" + sub + ".html";
+
+        $("#item_sub_" + index).load(loadPage);
+
+    }
+
+
+    function makeJsonItem() {
+
+        var _item = ["OMC 입금", "OMC 잔액 ", "스테이킹신청", "스테이킹 내역", "OMC 철수"];
+        var _sub = ["remit", "balance", "staking", "list", "withdraw"];
+
+
+        var iconPath = "/assets/imgs/";
+        var itemIcon = [
+            iconPath + "upload.png"
+            , iconPath + "wallet.png"
+            , iconPath + "opening.png"
+            , iconPath + "list.png"
+            , iconPath + "download.png"
+        ];
+
+
+        var arrowIcon = iconPath + "arrow-down.png";
+
+        var _jsonArray = new Array();
+        var _jItem = new Object();
+
+        for (let i = 0; i < _item.length; i++) {
+
+            var _jItem = new Object();
+            _jItem.icon = itemIcon[i];
+            _jItem.label = _item[i];
+            _jItem.sub = _sub[i];
+            _jItem.arrow = arrowIcon;
+
+            _jsonArray.push(_jItem);
+        }
+        return _jsonArray;
+
+
+    }
+
+
+    function makeDivItem(divID, _item) {
+
+
+        var _divDom = "";
+
+        for (let c = 0; c < _item.length; c++) {
+            _divDom += "<div id='item_" + c + "_" + _item[c].sub + "' class='cell_item  ' style='cursor:pointer;'>";
+            _divDom += "     <div class='cell_15p'><img src='" + _item[c].icon + "' width='30' /></div>";
+            _divDom += "     <div class='cell_75p item_lable'>" + _item[c].label + "</div>";
+            _divDom += "     <div  class='cell_6p'><img id='arrowIcone_" + c + "' src='" + _item[c].arrow + "' width='18' /></div>";
+            _divDom += "</div>";
+
+            _divDom += "<div id='item_sub_" + c + "' class='cell_item_sub  ' style='display:none;'></div>";
+        }
+        $("#" + divID).html(_divDom)
+
+    }
+
+</script>

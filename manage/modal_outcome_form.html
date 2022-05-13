@@ -1,0 +1,143 @@
+<div id="" class="wrap_fence">
+    <div id="" class="modal_cell_100p"
+        style="font-size: 22px; font-weight: bold; padding: 4px; border-bottom: 1px solid #dadada; margin-bottom: 20px;">
+        <?=$_POST['label'];?>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">userID</div>
+        <div id="modal_userID" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">userAddr</div>
+        <div id="modal_userWalletAddr" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> 계약기간 </div>
+        <div id="modal_deposit_date" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> 계약수량</div>
+        <div id="modal_balance" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> Earned </div>
+        <div id="modal_Earned" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> 가능수량</div>
+        <div id="modal_sum" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> 철수요청수량 </div>
+        <div id="modal_amount" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> 철수 요청일 </div>
+        <div id="modal_deposit_date" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">confirm State</div>
+        <div id="" class="modal_cell_70p_dib" style="background-color: #fff;">
+            <input type="checkbox" id="modal_confirmState"> OMC 철수 확인
+        </div>
+    </div>
+
+
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">confirm Date</div>
+        <div id="modal_confirmDate" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+
+        <div id="" class="modal_cell_25p_dib">confirm Manger</div>
+        <div id="modal_confirmManger" class="modal_cell_70p_dib bg_d"> - </div>
+
+    </div>
+    <!--
+    <div id="" class="modal_cell_100p">
+        remarks
+    </div>
+    <div id="remarks" class="modal_cell_100p bg_d">
+    </div>
+-->
+    <div id="" class="modal_cell_100p" style="text-align: center; margin-top: 50px;">
+        <div id="OK" class="btn_group  ">확인</div>
+        <div id="CC" class="btn_group  ">취소</div>
+    </div>
+</div>
+<input type="hidden" id="m_userID" value="<?=$_POST['userID'];?>" />
+<input type="hidden" id="m_idx" />
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        let m_userID = $("#m_userID").val();
+
+        outcome_data_modal(m_userID);
+
+        $('#wrap_fence').on("click", ".btn_group", function (event) {
+            let _tmpID = $(this).attr("id");
+            let idx = _tmpID.split("_")[1];
+
+            $("#modal").show();
+            $("#modal_content").load("./modal_outcome_form.html", { idx: idx, label: "Outcome Detail / 철수 내용 보기" });
+
+        }); //data_section
+
+        $('#OK').on("click", function (event) {
+
+            if ($('#modal_confirmState').is(':checked'))
+                alert("OK");
+            else {
+                alert("OMC 입금 확인 하셨나요?");
+                $('#modal_confirmState').focus();
+                return false;
+            }
+        }); //data_section
+
+        $('#CC').on("click", function (event) {
+
+            $("#modal").hide();
+            $("#modal_content").unload();
+
+        }); //data_section
+
+    }); //jq
+
+    function outcome_data_modal(userID) {
+        let jURL = "./modules/outcome_get_one.php";
+        let params = { userID: userID };
+
+        let data = getDataOne(jURL, params);
+
+        console.log("outcome_data_modal---------", data)
+        let obj = $.parseJSON(data);
+
+        $("#modal_idx").val(obj[0].idx);
+        $("#modal_userID").html(obj[0].userID);
+        $("#modal_omcStaking_idx").html(obj[0].omcStaking_idx);
+        $("#modal_userWalletAddr").html(obj[0].modal_userWalletAddr);
+        $("#modal_amount").html(obj[0].amount);
+        $("#modal_confirmDate").html(obj[0].confirmDate);
+        $("#modal_confirmManger").html(obj[0].confirmManager);
+        $("#modal_remarks").html(obj[0].remarks);
+        $("#modal_recDate").html(obj[0].recDate);
+
+        if (obj[0].confirmState > 0)
+            $("#modal_confirmState").prop('checked', true);
+        else
+            $("#modal_confirmState").prop('checked', false);
+
+    }
+
+
+</script>

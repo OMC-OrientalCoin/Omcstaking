@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OMC STAKING</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="assets/css/sub.css">
+
+    <!-- <link rel="stylesheet" media="all and (min-width:1200px)" href="assets/css/desktop.css"> 
+    <link rel="stylesheet" media="all and (min-width:768px) and (max-width:1199px)" href="assets/css/laptop.css"> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="./components/modules.js"></script>
+
+    <script>
+        $(function () {
+            var iconPath = "assets/imgs/";
+
+
+            $('#btn_back').on('click', function () {
+                var goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+
+            let preTab = "i";
+            $('#main').on('click', '.tab', function () {
+                var thisID = $(this).attr("id");
+
+                $("#" + preTab).removeClass("cTabOn");
+                $("#" + preTab).addClass("cTab");
+                $("#" + thisID).addClass("cTabOn");
+
+                $(".cfind").hide();
+                $(".finde_cell").hide();
+
+                if (thisID == "i") {
+
+                    $("#findIDWrap").show();
+                    $(".find_cell").show();
+                    $("#retIDValue").hide();
+
+
+                } else {
+
+                    $("#findPWWrap").show();
+                    $(".findPW").show();
+                    $("#retPWValue").hide();
+
+
+                }
+
+                preTab = thisID;
+
+            });
+
+
+            $('#btn_findID').on('click', function () {
+
+                let userPhone = $('#userPhone').val();
+                let retObj;
+
+                if (userPhone == "") {
+                    alert("연락처를 입력해주새요.");
+                    $('#userPhone').focus();
+                    return false;
+                } else {
+
+                    retObj = findUserInfo("", userPhone)
+                    var obj = JSON.parse(retObj);
+
+                    if (obj['retValue'] == "NE")
+                        alert("회원정보가 없습니다 ")
+                    else if (obj['retValue'] == "ND")
+                        alert("회원정보가 맞지 않습니다 ")
+                    else {
+
+                        $(".findID").hide();
+                        $("#retIDValue").html(obj['userID']);
+                        $("#retIDValue").show();
+                    }
+
+                }
+            });
+
+
+            $('#btn_findPW').on('click', function () {
+                let userID = $('#userID').val();
+                let userPhone = $('#userPhonePW').val();
+                let retObj;
+
+                if (userID == "") {
+                    alert("아이디를 입력해주새요.");
+                    $('#userID').focus();
+                    return false;
+
+
+                } else if (userPhone == "") {
+                    alert("연락처를 입력해주새요.");
+                    $('#userPhonePW').focus();
+                    return false;
+
+                } else {
+                    retObj = findUserInfo(userID, userPhone)
+
+                    var obj = JSON.parse(retObj);
+
+                    if (obj['retValue'] == "EC")
+                        alert("회원정보가 없습니다 ")
+                    else if (obj['retValue'] == "ND")
+                        alert("회원정보가 맞지 않습니다 ")
+                    else {
+
+                        $(".findPW").hide();
+                        $("#retPWValue").html(obj['userPW']);
+                        $("#retPWValue").show();
+                    }
+
+                }
+            });
+
+        });
+
+
+
+    </script>
+
+</head>
+
+<body style="padding: 0px; margin: 0px;">
+    <div id=" "
+        style=" width: 100%; height: 60px; top: 0px; left: 0px; background-color: rgba(55, 43, 226, 0.644); line-height: 60px;">
+        <div id="btn_back"
+            style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;">
+            < </div>
+                <div
+                    style="width: 70%; display: inline-block; text-align: center; vertical-align:top; color: #FFF; font-size: 20px;  ">
+                    ORIENTALCOIN STAKING
+                </div>
+                <div id="btn_logout"
+                    style="width: 10%; text-align: center; display: inline-block;color: #FFF; font-size: 22px; float: right; cursor: pointer;">
+
+                </div>
+        </div>
+
+
+
+        <div id="main" style=" width: 80%; margin: 20px auto; ">
+            <div id="" class="">
+                <div id="" class=""
+                    style=" font-size: 22px; font-weight: bold; padding: 10px 0px; border-bottom: 1px solid #DADADA;">
+                    Find ID / PASSWORD
+                </div>
+
+                <div class="cTabWrap">
+                    <div id="i" class="cTabOn tab">ID</div>
+                    <div id="p" class="cTab tab" style="text-align: center;">PASSWORD</div>
+                    <div id="" class="cTabTail ">&nbsp;</div>
+                </div>
+
+
+                <div id="findIDWrap" class="cfind" style=" margin-top: 40px;">
+                    <div id="findID" class="find_cell" style="margin-top: 10px;">
+                        <input type="text" id="userPhone" name="userPhone" placeholder="연락처를 입력하세요">
+                    </div>
+
+                    <div id="retIDValue" class="finde_cell"
+                        style="margin-top: 20px; padding: 20px; font-size: 22px; font-weight: bold; display: none; background-color: #dadada;">
+                    </div>
+
+                    <div id="" class="find_cell" style="margin: 64px auto; ">
+                        <div id="btn_findID" name="btn_findID" class="divButton" style="width: 250px;">Find </div>
+                    </div>
+                </div>
+
+                <div id="findPWWrap" class="cfind" style="display: none; margin-top: 40px;">
+                    <div id="findPW" class="findPW " style="display: none; margin-top: 40px;">
+                        <div id="" class="" style="margin-top: 1px;">
+                            <input type="text" id="userID" name="userID" placeholder="사용자 아이디">
+                        </div>
+                        <div id="" class="" style="margin-top: 10px;">
+                            <input type="text" id="userPhonePW" name="userPhonePW" placeholder="연락처를 입력하세요">
+                        </div>
+                    </div>
+
+                    <div id="retPWValue" class="findPW"
+                        style="margin-top: 20px; padding: 20px; font-size: 22px; font-weight: bold; display: none;  background-color: #dadada;">
+
+                    </div>
+
+
+                    <div id="" class="findPW" style="margin: 60px auto; ">
+                        <div id="btn_findPW" name="btn_findPW" class="divButton" style="width: 250px;"> Find </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <footer>3</footer> -->
+
+</body>
+
+</html>

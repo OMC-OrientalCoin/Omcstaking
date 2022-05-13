@@ -1,0 +1,80 @@
+<div id="info_sub" class=""
+    style="width: 90%; height: auto; background-color: #fff; margin: 0px auto;border-radius: 30px;">
+    <div id=" " class=""
+        style="width: 96%;  border-bottom: 1px solid #DADADA; padding: 10px 0px 10px 10px; font-size: 12px;">
+        Staking Information
+    </div>
+
+
+    <div id=" " class=""
+        style="width: 96%;  border-bottom: 1px solid #DADADA; padding: 0px; font-size: 12px; margin: 4px 0px; padding: 4px 0px;">
+        <div id="" class="" style="width: 40%;margin-left: 10px; display: inline-block;">
+            <div class="" style="width: 40%; display: inline-block;  padding: 4px 0px;"> 시작일 </div>
+            <div id="si_start_day" class=""
+                style="width: 50%;text-align: right; display: inline-block; padding-right: 4px;background-color: #eaeaea;">
+            </div>
+        </div>
+
+        <div id="" class="" style="width: 40%;margin-left: 10px; display: inline-block; float: right ;">
+            <div class="" style="width: 40%; display: inline-block;  padding: 4px 0px;"> 종료일 </div>
+            <div id="si_end_day" class=""
+                style="width: 50%;text-align: right; display: inline-block; padding-right: 4px;background-color: #eaeaea;">
+            </div>
+        </div>
+    </div>
+
+    <div id=" " class=""
+        style="width: 96%;  border-bottom: 1px solid #DADADA; padding: 0px; font-size: 12px; margin: 4px 0px;">
+        <div id="" class="" style="width: 40%;margin-left: 10px; display: inline-block;">
+            <div class="" style="width: 40%; display: inline-block;  padding: 4px 0px;">기 간 </div>
+            <div id="si_deposit_period" class=""
+                style="width: 50%;text-align: right; display: inline-block; padding-right: 4px;background-color: #eaeaea;">
+            </div>
+        </div>
+
+        <div id="" class="" style="width: 40%;margin-left: 10px; display: inline-block; float: right ;">
+            <div class="" style="width: 40%; display: inline-block; padding: 4px 0px; ">이 율 </div>
+            <div id="si_ratio" class=""
+                style="width: 50%;text-align: right; display: inline-block; padding-right: 4px;background-color: #eaeaea;">
+            </div>
+        </div>
+    </div>
+
+
+    <div id=" " class=""
+        style="width: 96%;  border-bottom: 1px solid #DADADA; padding: 0px; font-size: 12px; margin: 4px 0px;">
+        <div id="" class="" style="width: 40%;margin-left: 10px; display: inline-block;">
+            <div class="" style="width: 40%; display: inline-block; padding: 4px 0px;">경과일 </div>
+            <div id="si_earned_days" class=""
+                style="width: 50%;text-align: right; display: inline-block; padding-right: 4px;background-color: #eaeaea;">
+            </div>
+        </div>
+
+        <div id="" class="" style="width: 40%;margin-left: 10px; display: inline-block; float: right ;">
+            <div class="" style="width: 40%; display: inline-block; padding: 4px 0px;">Earned </div>
+            <div id="si_earned" class=""
+                style="width: 50%;text-align: right; display: inline-block; padding-right: 4px;background-color: #eaeaea;">
+                &nbsp;</div>
+        </div>
+
+    </div>
+</div>
+
+<input type="hidden" id="userID" value="<?=$_POST['userID'];?>" />
+<input type="hidden" id="ratio" />
+<link rel="stylesheet" href="/assets/css/sub.css">
+<script type="text/javascript" src="/components/staking.js"></script>
+<script type="text/javascript" src="/components/staking_info.js"></script>
+<script>
+    $(function () {
+
+        let _userID = $("#userID").val();
+
+        info_staking(_userID);
+
+
+    });
+
+
+
+</script>

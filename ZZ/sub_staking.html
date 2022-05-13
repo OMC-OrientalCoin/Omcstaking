@@ -1,0 +1,160 @@
+<div id="order" class="cell_wrap">
+    <div id="" class="cell_wrap">
+        예금기간 선택 & 수량 :
+    </div>
+    <!-- <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 20px;">
+        예금가능 수량
+    </div>
+    <div id="omc_balance_staking" class=""
+        style=" font-size: 16px; font-weight: bold; text-align: right; padding-right: 5px;"> </div> -->
+
+
+    <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 30px;">
+        스태킹 기간 선택
+    </div>
+
+    <div id="" class="cell_wrap" style=" width:98%; margin-top: 8px; font-size: 12px;  padding: 2px;">
+        <div id="m_4" class="  cTerm" style=" width:28%; display: inline-block;"> 4개월 <br />30% </div>
+        <div id="m_8" class="  cTerm" style="width:28%;margin-left: 1%;display: inline-block;">8개월 <br />60% </div>
+        <div id="m1_12" class="  cTerm" style="width:28%; margin-left: 1%;display: inline-block;"> 12개월<br />100%</div>
+    </div>
+
+
+
+    <div id="contractDate" class="cell_wrap" style="margin-top: 10px; font-size: 14px; font-weight: bold;  ">
+
+    </div>
+    <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 40px;">
+        신청 수량
+    </div>
+    <div id="div_account" class="cell_wrap" style="margin-top: 6px; ">
+        <input type="text" id="deposit" name="deposit" style=" background-color: #fff;" />
+    </div>
+
+    <div id="" class="cell_wrap" style="margin-top: 30px; ">
+        <div id="btn_contract" name="btn_contract" class="divButton" style="background-color: #fff;"> 신청하기 </div>
+    </div>
+    <div id="" class="" style="margin-top: 30px; background-color: #fff; padding: 20px;font-size: 12px; ">
+        옵션 선택에 따라 이율이 결정됩니다.<br />
+    </div>
+</div>
+
+
+<input type="hidden" id="selMonth" />
+<input type="hidden" id="amount" />
+<input type="text" id="income_balance" />
+
+<style type="text/css">
+    input {
+        width: 100px;
+        border: none;
+        padding: 4px;
+        width: 100%;
+        background-color: #fff;
+    }
+</style>
+<script>
+    $(function () {
+
+
+        let contractDate = "";
+        let contractDate_start = "";
+        let contractDate_end = "";
+
+        let userID = $('#userID').val();
+
+        incomeData("omc_balance_staking", userID);
+
+        let omc_balance = $('#omc_balance').html();
+
+
+
+        $('#order').on('click', ".cTerm", function () {
+
+            let thisID = $(this).attr("id");
+            let tmpMonth = thisID.split("_")[1];
+
+            $('#selMonth').val(tmpMonth);
+
+            $(".cTerm").css("backgroundColor", "");
+            $("#" + thisID).css("backgroundColor", "#ffffff");
+
+            //기간선택 
+            ++tmpMonth; // 월 +1 (js 날짜.. 중요)
+            contractDate_start = getTerm(1);
+            contractDate_end = getTerm(tmpMonth);
+
+            contractDate = "선택 기간  : " + contractDate_start + " ~ " + contractDate_end;
+
+
+            $("#contractDate").text(contractDate);
+
+        });
+
+        $('#btn_contract').on('click', function () {
+
+            let selMonth = $('#selMonth').val();
+            let contract_balance = parseFloat($('#income_balance').val()); //$('#balance').val();
+            let contract_deposit = parseFloat($('#deposit').val());
+
+            if (selMonth == "") {
+                alert("기간을 선택하세요");
+                returnState = false;
+
+            } else if ($('#deposit').val() == "") {
+                alert("수량을 입력하세요");
+                $('#deposit').focus();
+                returnState = false;
+            } else {
+
+                let chkState = chkBalanceState(selMonth, contract_balance, contract_deposit)
+
+                if (chkState) {
+
+                    var url = "./modules/omcStaking_set.php";
+                    var params = {
+                        userID: userID,
+                        balance: contract_balance,
+                        deposit: contract_deposit,
+                        deposit_period: selMonth,
+                        deposit_date: contractDate_end
+                    };
+
+                    $.post(url, params).done(function (data) {
+                        console.log('--->', data);
+
+                        alert("신청되었습니다.")
+                        info_income(userID);
+
+                    });
+
+
+                }//chkState
+            }
+
+        }); //  $("#wForm").submit
+
+    }); //jquery
+
+
+    function chkBalanceState(selMonth, contract_balance, contract_deposit) {
+        let returnState = false;
+
+        if (selMonth == "") {
+            alert("기간을 선택하세요");
+            returnState = false;
+        } else {
+            if (contract_balance < contract_deposit) {
+                alert("예금 가능 수량이 부족합니다.");
+                returnState = false;
+            }
+            else {
+                returnState = true;
+            }
+        }
+
+        return returnState;
+    }
+
+
+</script>

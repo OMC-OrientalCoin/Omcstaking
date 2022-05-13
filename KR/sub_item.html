@@ -1,0 +1,117 @@
+<div id="item" class="cItem"></div>
+
+<script>
+    $(function () {
+
+        const _jsonArray = makeJsonItem()
+        makeDivItem("item", _jsonArray);
+
+        var iconPath = "/assets/imgs/";
+        var arrowIcon = iconPath + "arrow-down.png";
+        var arrowIcon_close = iconPath + "arrow-up.png";
+
+
+        let preItemNum = "";
+        $('#item').on('click', ".cell_item", function () {
+            var thisID = $(this).attr("id");
+            var tmpIdx = thisID.split("_")[1];
+
+            $(".cell_item_sub").hide();
+
+            if (preItemNum == tmpIdx) {
+                $("#item_sub_" + tmpIdx).hide();
+                $("#arrowIcone_" + tmpIdx).attr("src", arrowIcon);
+                tmpIdx = "";
+            } else {
+
+                loadPage(tmpIdx)
+                $("#item_sub_" + tmpIdx).show();
+                $("#arrowIcone_" + tmpIdx).attr("src", arrowIcon_close)
+            }
+
+            preItemNum = tmpIdx;
+        });
+
+        $('#item').on('mouseover', '.cell_item', function () {
+            var thisID = $(this).attr("id");
+            $("#" + thisID).css("backgroundColor", "#DADADA");
+
+        });
+        $('#item').on('mouseout', '.cell_item', function () {
+            var thisID = $(this).attr("id");
+
+            $("#" + thisID).css("backgroundColor", "#ffffff");
+        });
+
+    });
+
+    function loadPage(index) {
+
+        let loadPage = "sub_" + index + ".html";
+        /*
+          switch (index) {
+              case 0: loadPage = "sub_" + index + ".html"; break;
+              case 1: loadPage = ""; break;
+              case 2: loadPage = ""; break;
+              case 3: loadPage = ""; break;
+              case 4: loadPage = ""; break;
+          }
+  */
+        $("#item_sub_" + index).load(loadPage);
+
+    }
+
+
+    function makeJsonItem() {
+
+        var iconPath = "/assets/imgs/";
+        var itemIcon = [
+            iconPath + "upload.png"
+            , iconPath + "wallet.png"
+            , iconPath + "opening.png"
+            , iconPath + "list.png"
+            , iconPath + "download.png"
+        ];
+
+        var strlabel = ["개설", "보유수량", "스테이킹신청", "스테이킹 내역", "해지"];
+        var arrowIcon = iconPath + "arrow-down.png";
+
+        var _jsonArray = new Array();
+        var _jItem = new Object();
+
+        for (let i = 0; i < strlabel.length; i++) {
+
+            var _jItem = new Object();
+            _jItem.itemIcon = itemIcon[i];
+            _jItem.Item_label = strlabel[i];
+            _jItem.arrowIcone = arrowIcon;
+
+            _jsonArray.push(_jItem);
+        }
+        return _jsonArray;
+
+
+    }
+
+    function makeDivItem(divID, _item) {
+
+
+        var _divDom = "";
+
+        for (let c = 0; c < _item.length; c++) {
+            _divDom += "<div id='item_" + c + "' class='cell_item  ' style='cursor:pointer;'>";
+            _divDom += "     <div class='cell_15p'><img src='" + _item[c].itemIcon + "' width='30' /></div>";
+            _divDom += "     <div class='cell_75p item_lable'>" + _item[c].Item_label + "</div>";
+            _divDom += "     <div  class='cell_10p'><img id='arrowIcone_" + c + "' src='" + _item[c].arrowIcone + "' width='20' /></div>";
+            _divDom += "</div>";
+            _divDom += "<div id='item_sub_" + c + "' class='cell_item_sub  ' style='display:none;'></div>";
+        }
+        $("#" + divID).html(_divDom)
+
+    }
+
+
+    $(window).on("load", function () {
+        console.log("window loaded");
+    });
+</script>

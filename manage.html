@@ -1,0 +1,107 @@
+<?php
+
+@session_start();  
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>OMC STAKING</title>
+
+
+    <link rel="stylesheet" href="./assets/css/common.css" id="theme_base">
+    <link rel="stylesheet" href="./assets/css/manage.css" id="theme_base">
+    <link rel="stylesheet" href="/js/pickadate/lib/themes/default.css" id="theme_base">
+    <link rel="stylesheet" href="/js/pickadate/lib/themes/default.date.css" id="theme_date">
+    <link rel="stylesheet" href="/js/pickadate/lib/themes/default.time.css" id="theme_time">
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="./components/index.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $("#btn_enter").on("click", function () {
+
+                let mID = $("#mID").val();
+                let mPW = $("#mPW").val();
+                let chkState = chkInputParams(mID, mPW)
+
+                if (chkState)
+                    login(mID, mPW)
+
+            }); //jq
+
+
+        }); //jq
+
+
+
+        function chkInputParams(mID, mPW) {
+            let chkState = false
+
+            if (mID == "") {
+                alert("아이디를 입력하세요");
+                $("#mID").focus();
+                chkState = false;
+            } else if (mPW == "") {
+
+                alert("비밀번호를 입력하세요");
+                $("#mPW").focus();
+                chkState = false;
+            } else {
+                chkState = true;
+            }
+
+            return chkState;
+
+        }
+
+
+
+        function login(userID, userPW) { 
+
+             chkState = chkLogin(userID, userPW);
+ 
+                    if (chkState ) {
+                        var goUrl = "./manage/";
+                        $(location).attr('href', goUrl);
+                    } else {
+                        alert("로그인 정보를 확인하여 주세요.\n관리자만 사용가능합니다.")
+                        return false;
+                    }
+        }
+
+
+    </script>
+</head>
+
+<body >
+    <div id=" contetn" class=" "
+        style=" width: 100%; height: 40px; line-height: 40px; display: block; top: 0px; left: 0px; position: absolute;  ">
+
+        <div id="" class="" style=" width:60%; display: block; margin: 200px auto; ">
+            <div id="" class=""
+                style=" width: 400px; display: block; margin: 20px auto; padding: 40px; background-image: url('assets/imgs/adminbg.png'); border-bottom: 1px solid #DADADA;">
+
+                <div id="" class="" style=" color: aliceblue; border-bottom: 1px solid #DADADA;">
+                    OMC Staking
+                </div>
+                <div id="" class="" style="margin-top: 20px; ">
+                    <div id="" class=""><input type="text" id="mID" class="" placeholder="아이디 입력" /></div>
+                    <div id="" class=""><input type="password" id="mPW" class="" placeholder="비밀번호 입력"  style="width: 96%;" /></div>
+                    <div id="" class="" style="margin-top: 30px;">
+                        <div id="btn_enter" class=""
+                            style="width: 240px; height: 30px; line-height: 30px; text-align: center;  margin: 0px auto; background-color: #cacaca;">
+                            Enter</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="userID" value="<?=userID;?>" />
+    <input type="hidden" id="userState" value="<?=chkUser;?>" />
+</body>
+
+</html>

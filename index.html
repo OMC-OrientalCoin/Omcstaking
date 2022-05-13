@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OMC STAKING</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/basic.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style type="text/css">
+        body {
+            background-image: url("./assets/imgs/index_bg.jpg");
+        }
+    </style>
+
+    <!-- <link rel="stylesheet" media="all and (min-width:1200px)" href="assets/css/desktop.css">
+    <link rel="stylesheet" media="all and (min-width:768px) and (max-width:1199px)" href="assets/css/laptop.css"> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./components/index.js"></script>
+
+    <script>
+        $(function () {
+            var iconPath = "assets/imgs/";
+
+            $('#main').on('click', '.btn_group1', function () {
+
+                var thisID = $(this).attr("id");
+                var thisState = thisID.split("_")[1];
+                var goUrl = "";
+
+                if (thisState == "join")
+                    goUrl = "join.html";
+                else if (thisState == "find")
+                    goUrl = "find.html";
+
+                $(location).attr('href', goUrl);
+            });
+
+            $('#btn_login').on('click', function () {
+                let UserID = $('#UserID').val();
+                let UserPW = $('#UserPW').val();
+                let chkState = false;
+
+                if (UserID == "") {
+                    alert("아이디를 입력하세요");
+                    $('#UserID').focus();
+                    return false;
+                } else if (UserPW == "") {
+                    alert("비밀번호를 입력하세요");
+                    $('#UserPW').focus();
+                    return false;
+
+                } else {
+
+                    chkState = chkLogin(UserID, UserPW);
+                    console.log(chkState + "|" + UserID + "|" + UserPW)
+                    if (chkState > 0) {
+                        var goUrl = "chkState.html";
+                        $(location).attr('href', goUrl);
+                    } else {
+                        alert("로그인 정보를 확인하여 주세요.\n회원이 아니시면 가입하여 주시기 바랍니다.")
+                        return false;
+                    }
+                }
+            });
+
+
+            $('#main').on('mouseover', '.btn_group', function () {
+                var thisID = $(this).attr("id");
+                $("#" + thisID).css("color", "#000")
+                $("#" + thisID).css("backgroundColor", "#DADADA")
+            });
+            $('#main').on('mouseout', '.btn_group', function () {
+                var thisID = $(this).attr("id");
+                $("#" + thisID).css("color", "#fff")
+                $("#" + thisID).css("backgroundColor", "")
+            });
+
+            $('#main').on('mouseover', '.btn', function () {
+                var thisID = $(this).attr("id");
+                $("#" + thisID).css("font-size", "18px")
+            });
+
+            $('#main').on('mouseout', '.btn', function () {
+                var thisID = $(this).attr("id");
+                $("#" + thisID).css("font-size", "14px")
+
+            });
+
+
+
+        }); //jquery
+
+
+
+            // $(window).on("load", function () {
+            //     console.log("window loaded");
+            // });
+    </script>
+
+</head>
+
+<body>
+    <div id="main">
+        <div class="cell_wrap" style="height: 220px; color: #ffffff; text-align: center; padding-top: 80px;">
+            <h1>ORIENTALCOIN
+                <br />STAKING
+            </h1>
+        </div>
+        <div class="cell_wrap">
+            <div id="" class="" style="width: 70%; margin: 0px auto;">
+                <div id="" class="" style="">
+                    <input type="text" id="UserID" name="UserID" class="inputFeild" placeholder="아이디" />
+                </div>
+                <div id="" class="" style="">
+                    <input type="password" id="UserPW" name="UserPW" class="inputFeild" placeholder="비밀번호" />
+                </div>
+
+                <div id="" class="" style="margin-top: 15px; ">
+                    <div id="btn_login" name="btn_login" class="divButton"
+                        style="width: 96%; padding: 8px; font-weight: bold; "> LOGIN
+                    </div>
+                </div>
+
+                <div id="" class="  line_bt"
+                    style=" width: 100%; height: 30px;  border-top: 1px solid #ffffff; margin: 60px auto; padding-top:20px;">
+                    <div id="btn_join" class="cell_20 btn_group1   dib btn "
+                        style="height: 28px;  color: #ffffff; text-align: left;font-size: 14px; font-weight: bold;">
+                        JOIN</div>
+                    <div id="" class="cell_50 dib">&nbsp;</div>
+                    <div id="btn_find" class="btn_group1  cell_20 dib btn "
+                        style="height: 28px; color: #ffffff;text-align: right; font-size: 14px; font-weight: bold;">
+                        FIND</div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- <footer>3</footer> -->
+    </div>
+</body>
+
+</html>

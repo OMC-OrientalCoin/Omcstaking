@@ -1,0 +1,193 @@
+<?php
+    
+    @session_start();  
+    $_userID = @$_SESSION['userID']; 
+    $_userLevel = @$_SESSION['userLevel']; 
+    if ( $_userID == ""  ) {
+        @session_destroy();
+        echo "<script>alert('로그인 후 사용할 수 있습니다.');</script>";
+        echo "<meta http-equiv='refresh' content='0;url=./index.html'>"; 
+
+    } 
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OMC STAKING</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/basic.css">
+    <link rel="stylesheet" href="/assets/css/sub.css">
+    <style type="text/css">
+        body {
+            background-image: url("/assets/imgs/index_bg.jpg");
+        }
+
+        #nation {
+            display: none;
+            z-index: 999;
+            width: 70px;
+            height: 120px;
+            top: 70px;
+            right: 10px;
+            background-color: #FFF;
+            position: fixed;
+            font-size: 12px;
+            padding: 15px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .btn_nation {
+            padding: 4px;
+            display: block;
+            width: calc(100% - 10px);
+            height: auto;
+            border-bottom: 1px solid #dadada;
+            text-align: center;
+        }
+
+        #btn_close {
+            width: 20px;
+            height: auto;
+            padding: 4px;
+            border: 1px solid #dadada;
+            background-color: #FFF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+
+    <!-- <link rel="stylesheet" media="all and (min-width:1200px)" href="assets/css/desktop.css">
+    <link rel="stylesheet" media="all and (min-width:768px) and (max-width:1199px)" href="assets/css/laptop.css"> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/components/staking.js"></script>
+    <script type="text/javascript" src="/components/modules.js"></script>
+    <script>
+        $(function () {
+
+            let userID = $("#userID").val();
+            makeNationMenu();
+            if (userID == "") {
+                alert("세션 정보가 없습니다.\n다시한번 로그인 해 주세요.")
+
+                var goUrl = "./index.html";
+                $(location).attr('href', goUrl);
+            }
+
+            $("#userID").val(userID);
+            $("#divUserID").html(userID);
+
+            $("#Staking_info_dp").load("./staking_info_dp.html", { userID: userID });
+            $("#Staking_info").load("./staking_info.html", { userID: userID });
+            $("#staking_item").load("./staking_item.html", { userID: userID });
+            $("#Staking_link").load("/Staking_link.html", { userID: userID });
+
+            let viewFlag = false;
+            $('#btn_menu').on('click', function () {
+
+                if (!viewFlag)
+                    $("#nation").show();
+                else
+                    $("#nation").hide();
+
+                viewFlag = !viewFlag;
+            });
+
+            $('#btn_logout').on('click', function () {
+                logout();
+                let goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#btn_close').on('click', function () {
+                // var goUrl = "index.html";
+                // $(location).attr('href', goUrl);
+                $("#nation").hide();
+            });
+
+
+            $('#nation').on('click', '.btn_nation', function () {
+                let thisID = $(this).attr("id");
+                let goUrl = "/" + thisID + "/main.html";
+                $(location).attr('href', goUrl);
+            });
+
+            $('#nation').on('mouseover', '.btn_nation', function () {
+                let thisID = $(this).attr("id");
+                //$("#" + thisID).css("color", "#f000ff")
+                $("#" + thisID).css("backgroundColor", "#EAEAEA")
+            });
+            $('#nation').on('mouseout', '.btn_nation', function () {
+                let thisID = $(this).attr("id");
+                //$("#" + thisID).css("color", "#")
+                $("#" + thisID).css("backgroundColor", "#FFF")
+            });
+
+
+        });
+
+        function makeNationMenu() {
+
+            let _tmpVar = "";
+            let nation = new Array('EN', 'CN', 'KR', 'VN');
+
+            for (let i = 0; i < nation.length; i++) {
+                // const element = array[i];
+                _tmpVar += "<div id='" + nation[i] + "'  class='btn_nation'>" + nation[i] + "</div>";
+            }
+
+            $("#nation").html(_tmpVar)
+        }
+
+    </script>
+
+</head>
+
+<body style="padding: 0px; margin: 0px;">
+    <div id="nation"> </div>
+    <div id=""
+        style=" width: 100%; height: 60px; top: 0px; left: 0px; background-color: rgba(55, 43, 226, 0.644); line-height: 60px;">
+        <div id="btn_home"
+            style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;">
+            <img src='/assets/imgs/home.png' width='28' />
+        </div>
+        <div
+            style="width: 70%; display: inline-block; text-align: center; vertical-align:top; color: #FFF; font-size: 20px;  ">
+            ORIENTALCOIN STAKING
+        </div>
+        <div id="btn_menu"
+            style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;float: right;">
+            <img src='/assets/imgs/btn_globe.png' width='28' />
+        </div>
+        <!-- <div id="btn_logout"
+            style="width: 10%; text-align: center; display: inline-block;color: #FFF; font-size: 22px; float: right; cursor: pointer;">
+            <img src='./assets/imgs/exit.png' width='26' />
+        </div> -->
+    </div>
+
+    <div id="main1">
+        <div id="" class="" style="width: 90%; margin: 10px auto; text-align: right; padding: 10px 0px; color: #fff;">
+            <div id="divUserID" class="" style="width: 70%;   display: inline-block; text-align: right;   color: #fff;">
+            </div>
+            <div id=" " class="" style="width: 16%;   display: inline-block; text-align: right;   color: #fff;">로그인중
+            </div>
+        </div>
+
+        <div id="Staking_info_dp" class=" " style="margin-top: 50px; "> </div>
+
+        <div style="background-color:#fff; width: 90%; height: auto; margin: 70px auto ;  padding: 10px 0px 40px;  ">
+            <div id="Staking_info" class=" " style="margin-top: 20px; "> </div>
+            <div id="staking_item" class=" "></div>
+            <div id="Staking_link" class=" "></div>
+        </div>
+    </div>
+    <!-- <footer>3</footer> -->
+    <input type="hidden" id="userID" value="<?=@$_SESSION['userID'];?>" />
+</body>
+
+</html>

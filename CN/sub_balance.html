@@ -1,0 +1,33 @@
+<div id="" class="cell_wrap">
+    <div id="" class=" " style="  margin: 10px auto;">
+        可質押數量
+    </div>
+
+    <div id="omc_balance" class=""
+        style="margin: 30px auto;font-size: 16px; font-weight: bold; text-align: right; padding-right: 5px;"> </div>
+
+    <div id="" class="cell_95p_blk" style="font-size: 12px; margin: 30px auto; background-color: #fff; padding: 20px;">
+        確認申請OMC轉賬後，將反映在餘額金額中.<br />
+        工作日晚上 9:30 至 17:30 提交的申請將在 30 分鐘內反映.<br />
+        週六/週日將在 24 小時後反映.<br />
+
+    </div>
+</div>
+
+<style type="text/css">
+    .omcWalletAddr {
+        padding: 4px;
+        display: block;
+        border: 1px solid #DADADA;
+        margin: 4px;
+    }
+</style>
+
+<script type="text/javascript" src="/components/staking.js"></script>
+<script>
+    $(function () {
+        let userID = $('#userID').val();
+        incomeData("omc_balance", userID);
+
+    }); 
+</script>

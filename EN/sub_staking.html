@@ -1,0 +1,160 @@
+<div id="order" class="cell_wrap">
+    <input type="hidden" id="selMonth" />
+    <input type="hidden" id="amount" />
+    <input type="hidden" id="income_balance" />
+    <input type="hidden" id="deposit" />
+    <div id="" class="cell_wrap">
+        Select deposit period & Quantity :
+    </div>
+    <!-- <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 20px;">
+        예금가능 수량
+    </div>
+    <div id="omc_balance_staking" class=""
+        style=" font-size: 16px; font-weight: bold; text-align: right; padding-right: 5px;"> </div> -->
+
+
+    <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 30px;">
+        Choose your stacking period
+    </div>
+
+    <div id="" class="cell_wrap" style=" width:98%; margin-top: 8px; font-size: 12px;  padding: 2px;">
+        <div id="m_4" class="  cTerm" style=" width:28%; display: inline-block;"> 4months <br />30% </div>
+        <div id="m_8" class="  cTerm" style="width:28%;margin-left: 1%;display: inline-block;">8months <br />60% </div>
+        <div id="m1_12" class="  cTerm" style="width:28%; margin-left: 1%;display: inline-block;"> 12months<br />100%
+        </div>
+    </div>
+
+
+
+    <div id="contractDate" class="cell_wrap" style="margin-top: 10px; font-size: 14px; font-weight: bold;  ">
+
+    </div>
+    <div id="" class="cell_wrap" style="font-size: 12px; margin-top: 40px;">
+        Application Quantity
+    </div>
+    <div id="div_account" class="cell_wrap"
+        style="margin-top: 6px; background-color: #fff;text-align: right; padding: 4px; font-weight: bold; "> 
+    </div>
+
+    <div id="" class="cell_wrap" style="margin-top: 30px; ">
+        <div id="btn_contract" name="btn_contract" class="divButton" style=" width: 80%; background-color: #fff;"> Apply
+        </div>
+    </div>
+    <div id="" class="" style="margin-top: 30px; background-color: #fff; padding: 20px;font-size: 12px; ">
+        The interest rate is determined by the option selection.<br />
+    </div>
+</div>
+
+
+<style type="text/css">
+    input {
+        width: 100px;
+        border: none;
+        padding: 4px;
+        width: 100%;
+        background-color: #fff;
+    }
+</style>
+<script>
+    $(function () {
+
+
+        let contractDate = "";
+        let contractDate_start = "";
+        let contractDate_end = "";
+
+        let userID = $('#userID').val();
+        let income_balance = incomeData("div_account", userID);
+        $('#income_balance').val(income_balance);
+        $('#deposit').val(income_balance);
+
+
+        $('#order').on('click', ".cTerm", function () {
+
+            let thisID = $(this).attr("id");
+            let tmpMonth = thisID.split("_")[1];
+
+            $('#selMonth').val(tmpMonth);
+
+            $(".cTerm").css("backgroundColor", "");
+            $("#" + thisID).css("backgroundColor", "#ffffff");
+
+            //기간선택 
+            ++tmpMonth; // 월 +1 (js 날짜.. 중요)
+            contractDate_start = getTerm(1);
+            contractDate_end = getTerm(tmpMonth);
+
+            contractDate = "selection period  : " + contractDate_start + " ~ " + contractDate_end;
+
+            $("#contractDate").text(contractDate);
+
+        });
+
+        $('#btn_contract').on('click', function () {
+
+            let selMonth = $('#selMonth').val();
+            let contract_balance = parseFloat($('#income_balance').val()); //$('#balance').val();
+            let contract_deposit = parseFloat($('#deposit').val());
+
+            if (selMonth == "") {
+                alert("Please select a period");
+                returnState = false;
+
+            } else if ($('#deposit').val() == "") {
+                alert("Please enter quantity");
+                $('#deposit').focus();
+                returnState = false;
+            } else {
+
+                let chkState = chkBalanceState(selMonth, contract_balance, contract_deposit)
+
+                if (chkState) {
+
+                    var url = "/modules/omcStaking_set.php";
+                    var params = {
+                        userID: userID,
+                        balance: contract_balance,
+                        deposit: contract_deposit,
+                        deposit_period: selMonth,
+                        deposit_date: contractDate_end
+                    };
+
+                    $.post(url, params).done(function (data) {
+                        console.log('--->', data);
+
+                        alert("has been applied.")
+                        info_income(userID);
+
+                        $(location).attr('href', "./main.html");
+
+                    });
+
+                }//chkState
+            }
+
+        }); //  $("#wForm").submit
+
+    }); //jquery
+
+
+    function chkBalanceState(selMonth, contract_balance, contract_deposit) {
+        let returnState = false;
+
+        if (selMonth == "") {
+            alert("請選擇一個時期");
+            returnState = false;
+        } else {
+            if (contract_balance < contract_deposit) {
+                alert("可用存款不足.");
+                returnState = false;
+            }
+            else {
+                returnState = true;
+            }
+        }
+
+        return returnState;
+    }
+
+
+</script>

@@ -1,0 +1,176 @@
+<div id="send_place" class="" style="font-size: 16px;">
+
+    <div id="" class="" style="width: 100%;text-align: left;vertical-align:baseline;">收款人錢包地址</div>
+    <div id="" class=""
+        style="margin-top: 10px; background-color: #fff;  padding-left: 5px; padding: 4px;word-break:break-all;">
+        0xa618b14C83161Ce0254baF4018166ef3030d92Df
+    </div>
+
+    <div id="" class="" style="width: 100%;text-align: left;margin-top: 30px;">收款人錢包二維碼</div>
+    <div id="" class="cell_80p_blk" style="text-align: center; margin: 20px auto;">
+        <img src='/assets/imgs/qr.png' width='220' />
+    </div>
+
+    <div id="" class="" style="width: 100%;   margin: 20px auto;">
+        <div id="" class="" style="width: 100%;text-align: left; margin-top: 30px;">發件人</div>
+        <div id="strSenderID" class=""
+            style="width: calc(100% - 10px); margin: 8px 0px; font-weight: bold;background-color: #fff;  padding:  4px;">
+        </div>
+
+
+        <div id="" class="" style="width: 100%;text-align: left; margin-top: 16px;">發送數量</div>
+        <div id="" class="" style="width: 100% ;margin: 8px 0px; ">
+            <input type=" number" id="sendQty" name="sendQty" class="inputFeild"
+                style="width: 94%;padding-left: 10px; background-color: #fff;" placeholder="OMC COIN 輸入匯款金額 " />
+        </div>
+
+
+        <div id="btn_send" name="btn_send"
+            style="width:90%; padding:8px 4px; display: block; border:1px solid #DADADA; background-color: #fff; text-align: center; margin:30px auto;">
+            發送
+        </div>
+
+        </form>
+    </div>
+</div>
+<input type="hidden" id="reserve_account" />
+<input type="hidden" id="selWalletAddr" />
+<input type="hidden" id="selBalance" />
+<input type="hidden" id="senderID" />
+
+
+<style type="text/css">
+    .onSelect {
+        color: #000;
+    }
+
+    .offSelect {
+        color: #adadad;
+
+    }
+</style>
+
+<script type="text/javascript" src="/components/staking.js"></script>
+<script type="text/javascript" src="/components/omcFunc.js"></script>
+<script>
+    $(function () {
+
+        let userID = $('#userID').val();
+        console.log("userID --------->", userID)
+        $('#strSenderID').html(userID);
+        $('#senderID').val(userID);
+
+        //reservationData("reservation_data", userID);
+
+        getCoinData_OMC(userID).then(function (resolvedData) {
+            makeForm("walletList", resolvedData);
+        })
+
+        $("#send_place").on("click", ".classWallet", function () {
+            var thisID = $(this).attr("id");
+            var tmpAddr = thisID.split("_")[1];
+            var tmpBalance = thisID.split("_")[2];
+
+
+            $(".classWallet").addClass("offSelect");
+            $("#" + thisID).removeClass("offSelect");
+            $("#" + thisID).addClass("onSelect");
+
+            $("#selWalletAddr").val(tmpAddr);
+            $("#selBalance").val(tmpBalance);
+
+
+        })
+
+
+        $("#btn_send").on("click", function () {
+
+            $("#btn_send").css(" background-color", "#eaeaea")
+
+
+            let sendQty = $('#sendQty').val();
+            let reserve_account = $('#reserve_account').val();
+
+            let chkState = chkRemit(senderID, selWalletAddr, sendQty, reserve_account);
+
+
+            if (chkState == true) {
+                var url = "/modules/omcStaking_income_set.php";
+                var params = { senderID: userID, sendQty: sendQty };
+                $.post(url, params).done(function (data) {
+                    let _msg = "";
+
+                    if (parseInt("data") < 1)
+                        _msg = "發生了錯誤. (" + data + ")";
+                    else
+                        _msg = "已經發送了. ";
+
+
+                    alert(_msg);
+                    console.log('--->', _msg);
+
+
+                    let tmpUrl = "./main.html";
+                    $(location).attr('href', tmpUrl);
+                });
+            }
+
+        }); //  $("#wForm").submit
+
+
+
+
+        $('#btn_send').on('mouseover', function () {
+            // var thisID = $(this).attr("id");
+            $('#btn_send').css(" background-color", "#dadada")
+        });
+
+        $('#btn_send').on('mouseout', function () {
+            // var thisID = $(this).attr("id");
+            $('#btn_send').css(" background-color", "#eaeaea")
+
+        });
+
+
+
+
+    });//jq
+
+
+    function chkRemit(senderID, selWalletAddr, sendQty, reserve_account) {
+
+        let returnState = false;
+        let tmpAddr, tmpBalance;
+
+        if (senderID == "") {
+            alert("請輸入您的身份證");
+            $('#senderID').focus();
+            returnState = false;
+        } else if (sendQty == "") {
+            alert("輸入要發送的金額");
+            $('#sendQty').focus();
+            returnState = false;
+        }
+        else {
+
+            // alert("OMC COIN 보유 수량 체크 ... ");
+            /*
+            tmpAddr = $("#selWalletAddr").val();
+            tmpBalance = $("#selBalance").val();
+
+            if (sendQty > tmpBalance) {
+                alert("OMC COIN 보유 수량이 부족합니다.");
+                returnState = false;
+            } else {
+                returnState = true;
+            }
+            */
+
+            returnState = true;
+        }
+
+        return returnState;
+    }
+
+
+</script>

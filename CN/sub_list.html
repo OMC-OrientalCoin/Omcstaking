@@ -1,0 +1,45 @@
+<style type="text/css">
+    .cell_p_wrap {
+        margin: 4px 0px;
+        padding: 2px 0px;
+
+    }
+</style>
+<div id="stakingList" class="transactionList_wrap" style="font-size: 14px;">
+
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='' style=' display: inline-block; width:30%;'> 可用數量 : </div>
+        <div id='div_cr_balance' class=' data_block'
+            style='width: calc(70% - 22px); text-align:right; display: inline-block;'> </div>
+    </div>
+
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='' style=' display: inline-block; width:30%;'> 開始日期 </div>
+        <div id='div_contract_period' class=' data_block'
+            style='width: calc(70% - 22px); text-align:right; display: inline-block;'> </div>
+    </div>
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='' style=' display: inline-block; width:30%;'> 結束日期 </div>
+        <div id='div_contract_period' class=' data_block'
+            style='width: calc(70% - 22px); text-align:right; display: inline-block;'> </div>
+    </div>
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='' style=' display: inline-block; width:30%;'> 時期 </div>
+        <div id='div_cr_deposit_period' class=' data_block'
+            style='width: calc(70% - 22px); text-align:right; display: inline-block;'> </div>
+    </div>
+    <div id='' class='cell_p_wrap'>
+        <div id='' class='' style=' display: inline-block; width:30%;'> 李率 </div>
+        <div id='div_cr_earned' class=' data_block'
+            style='width: calc(70% - 22px); text-align:right; display: inline-block;'> </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/components/staking.js"></script>
+<script>
+    $(function () {
+
+        let userID = $("#userID").val();
+        getStakingListData(userID);
+
+    });

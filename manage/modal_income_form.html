@@ -1,0 +1,127 @@
+<div id="" class="wrap_fence">
+    <div id="" class="modal_cell_100p"
+        style="font-size: 22px; font-weight: bold; padding: 4px; border-bottom: 1px solid #dadada; margin-bottom: 20px;">
+        <?=$_POST['label'];?>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">userID</div>
+        <div id="modal_userID" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">fromAddr</div>
+        <div id="modal_fromAddr" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib"> amount</div>
+        <div id="modal_amount" class="modal_cell_70p_dib bg_d">- </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">confirm State</div>
+        <div id="" class="modal_cell_70p_dib" style="background-color: #fff;">
+            <input type="checkbox" id="modal_confirmState"> OMC 입금 확인
+        </div>
+    </div>
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">confirm Date</div>
+        <div id="modal_confirmDate" class="modal_cell_70p_dib bg_d"> </div>
+    </div>
+
+
+    <div id="" class="modal_cell_100p">
+        <div id="" class="modal_cell_25p_dib">confirm Manger</div>
+        <div id="modal_confirmManger" class="modal_cell_70p_dib bg_d"> - </div>
+
+    </div>
+    <!--
+    <div id="" class="modal_cell_100p">
+        remarks
+    </div>
+    <div id="remarks" class="modal_cell_100p bg_d">
+    </div>
+-->
+    <div id="" class="modal_cell_100p" style="text-align: center; margin-top: 50px;">
+        <div id="OK" class="btn_group  ">확인</div>
+        <div id="CC" class="btn_group  ">취소</div>
+    </div>
+</div>
+<input type="hidden" id="m_userID" value="<?=$_POST['userID'];?>" />
+<input type="hidden" id="m_idx" value="<?=$_POST['idx'];?>" />
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        let m_userID = $("#m_userID").val();
+        let m_idx = $("#m_idx").val();
+
+        income_data_modal(m_userID);
+
+        $('#wrap_fence').on("click", ".btn_group", function (event) {
+            let _tmpID = $(this).attr("id");
+            let idx = _tmpID.split("_")[1];
+
+            $("#modal").show();
+            $("#modal_content").load("./modal_income_form.html", { idx: idx, label: "Income Detail" });
+
+        }); //data_section
+
+        $('#OK').on("click", function (event) {
+            let retState = "";
+            if ($('#modal_confirmState').is(':checked')) { 
+                retState = income_data_confirm(m_userID, m_idx);
+                $("#modal").hide();
+                location.reload();
+            } else {
+                alert("OMC 입금 확인 하셨나요?");
+                $('#modal_confirmState').focus();
+                return false;
+            }
+        }); //data_section
+
+        $('#CC').on("click", function (event) {
+
+            $("#modal").hide();
+            $("#modal_content").unload();
+
+        }); //data_section
+
+    }); //jq
+
+    function income_data_confirm(userID, idx) {
+        console.log(userID + "|" + idx)
+        let jURL = "./modules/income_update.php";
+        let params = { userID: userID, idx: idx };
+        let data = getDataOne(jURL, params);
+
+
+    }
+
+    function income_data_modal(userID) {
+        let jURL = "./modules/income_get_one.php";
+        let params = { userID: userID };
+
+        let data = getDataOne(jURL, params);
+        let obj = $.parseJSON(data);
+
+        $("#modal_idx").val(obj[0].idx);
+        $("#modal_userID").html(obj[0].userID);
+        $("#modal_fromAddr").html(obj[0].fromAddr);
+        $("#modal_amount").html(obj[0].remittance_amount);
+        $("#modal_confirmDate").html(obj[0].confirmDate);
+
+        if (obj[0].confirmState > 0)
+            $("#modal_confirmState").prop('checked', true);
+        else
+            $("#modal_confirmState").prop('checked', false);
+
+        $("#modal_confirmManger").html(obj[0].confirmManager);
+        $("#modal_remarks").html(obj[0].remarks);
+        $("#modal_recDate").html(obj[0].recDate);
+
+    }
+
+
+</script>

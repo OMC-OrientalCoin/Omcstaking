@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OMC STAKING</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+
+    <link rel="stylesheet" href="/assets/css/basic.css">
+    <link rel="stylesheet" href="/assets/css/sub.css">
+
+    <style type="text/css">
+        body {
+            background-image: url("/assets/imgs/index_bg.jpg");
+        }
+
+        #nation {
+            display: none;
+            z-index: 999;
+            width: 70px;
+            height: 120px;
+            top: 70px;
+            right: 10px;
+            background-color: #FFF;
+            position: fixed;
+            font-size: 12px;
+            padding: 15px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .btn_nation {
+            padding: 4px;
+            display: block;
+            width: calc(100% - 10px);
+            height: auto;
+            border-bottom: 1px solid #dadada;
+            text-align: center;
+        }
+
+        #btn_close {
+            width: 20px;
+            height: auto;
+            padding: 4px;
+            border: 1px solid #dadada;
+            background-color: #FFF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[tyoe=text],
+        input[type=password] {
+            width: 86%;
+        }
+    </style>
+    <!-- <link rel="stylesheet" media="all and (min-width:1200px)" href="assets/css/desktop.css">
+        <link rel="stylesheet" media="all and (min-width:768px) and (max-width:1199px)" href="assets/css/laptop.css"> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/components/modules.js"></script>
+    <script src="/components/chkOmcMember.js"></script>
+    <script>
+        $(function () {
+
+            let userID = "";
+            var iconPath = "/assets/imgs/";
+
+            makeNationSelect();
+
+            $("form :input").attr("autocomplete", "off");
+
+            $('#chkOmcMember').on('change', function () {
+                let state = $(this).is(':checked')
+
+                $(".form").hide();
+                if (state)
+                    $("#joinWrapOmc").show();
+                else
+                    $("#joinWrap").show();
+
+            });
+
+            $('#newUserID').on('change', function () {
+                $("#chkID").prop('checked', false);
+            });
+
+            $('#chkID').on('change', function () {
+                let userID = $('#newUserID').val();
+                let chkID_retValue = null;
+
+                if (!userID) {
+                    alert("enter your ID. ");
+                    $('#newUserID').focus();
+                    return false;
+                }
+
+                chkID_retValue = Number(chkExistUserID(userID));
+
+                if (chkID_retValue > 0) {
+                    alert("This ID is already taken.\nenter a different ID. ");
+                    $('#userID').val("");
+                    $('#userID').focus();
+
+                } else {
+                    alert("User ID is available. ");
+
+                }
+
+                $('#isUseChkID').val(chkID_retValue);
+
+            });
+
+            // isUseChkID(userID) {
+            $('#btn_back').on('click', function () {
+                var goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $("#joinForm").submit(function (event) {
+                event.preventDefault();
+
+                var url = "/modules/member_set.php";//$(this).attr("action");
+                var data = $(this).serialize();
+                console.log('--->', data);
+                let validationState = validation();
+                let isUseChkID = $('#isUseChkID').val();
+
+                if (validationState) {
+                    if (isUseChkID) {
+                        $.post(url, data)
+                            .done(function (data) {
+
+                                //$('#Wallet_addr').html("0xqwerqwerqwerqwerqwerqwerqwer");
+
+                                //$('#btn_wrap').hide();
+                                //$('#Wallet_wrap').show();
+                                console.log('--->', data);
+                                if (parseInt(data) > 0) {
+                                    alert("You are registered. ");
+                                    $(location).attr('href', "/index.html");
+                                }
+                                else
+                                    alert("Failed to register .\nPlease contact the management.");
+
+                            });
+                    } else {
+                        alert("check if the ID is duplicated.");
+                        $('#isUseChkID').focus();
+                        return false;
+                    }
+
+                    return false;
+                }//validationState 
+            });
+
+
+
+            let viewFlag = false;
+            $('#btn_menu').on('click', function () {
+
+                if (!viewFlag)
+                    $("#nation").show();
+                else
+                    $("#nation").hide();
+
+                viewFlag = !viewFlag;
+            });
+
+            $('#btn_logout').on('click', function () {
+                logout();
+                var goUrl = "index.html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#btn_close').on('click', function () {
+                // var goUrl = "index.html";
+                // $(location).attr('href', goUrl);
+                $("#nation").hide();
+            });
+
+
+            $('#nation').on('click', '.btn_nation', function () {
+                var thisID = $(this).attr("id");
+                var goUrl = "join_" + thisID.toLowerCase() + ".html";
+                $(location).attr('href', goUrl);
+
+            });
+
+            $('#nation').on('mouseover', '.btn_nation', function () {
+                var thisID = $(this).attr("id");
+                //$("#" + thisID).css("color", "#f000ff")
+                $("#" + thisID).css("backgroundColor", "#EAEAEA")
+            });
+
+            $('#nation').on('mouseout', '.btn_nation', function () {
+                var thisID = $(this).attr("id");
+                //$("#" + thisID).css("color", "#")
+                $("#" + thisID).css("backgroundColor", "#FFF")
+            });
+
+
+            $('#btn_chkOmcMember').on('click', function () {
+
+                let omcID = $('#userID').val();
+                let omcPW = $('#userPW').val();
+
+
+                if (!omcID) {
+                    alert("Please input OMC member ID");
+                    $('#userID').focus();
+                    return false;
+
+                } else if (!omcPW) {
+                    alert("Please input OMC member password ");
+                    $('#userID').focus();
+                    return false;
+
+                } else {
+
+
+                    let chkMemStateValue = chkExistUserID(omcID)
+
+                    if (chkMemStateValue > 0) {
+
+                        $('#div_chkMemState').html(" This is the registered ID.");
+                        $('#div_chkMemState').show();
+                        $('#chkMemState').val(1);
+
+                        return false;
+
+                    } else {
+
+                        let retData = chkOmcMember(omcID, omcPW);
+
+                        if (retData.trim() == "null") {
+                            //if (retData == "" || retData == null || retData == "null" || retData == undefined) {
+                            alert("Please check your OMC member information. ");
+                            return false;
+                        } else {
+
+
+                            var obj = $.parseJSON(retData);
+                            $('#userName').val(obj[0].userName);
+                            $('#userPhone').val(obj[0].userPhone);
+                            $('#userEmail').val(obj[0].userEmail);
+                            $('#userEmail').val(obj[0].userEmail);
+                            $('#userNation').val(obj[0].userNation);
+
+                            $('#btn_join_omc_wrap').show();
+
+                        }
+                    }
+                }
+            });
+
+
+            $("#joinForm_omc").submit(function (event) {
+
+                let omcID = $('#userID').val();
+                let userName = $('#userName').val();
+                let chkMemStateValue = $('#chkMemState').val();
+
+                if (chkMemStateValue > 0) {
+                    alert("This ID is already registered.");
+                    return false;
+
+                } else if (userName == "") {
+
+                    alert("No member information.");
+                    return false;
+
+                } else {
+
+                    var con_test = confirm("If the member information is correct, click OK.");
+                    if (con_test) {
+                        var joinData = $(this).serialize();
+                        var url = "/modules/member_omc_set.php";
+
+                        $.post(url, joinData)
+                            .done(function (data) {
+                                console.log(data)
+                                if (parseInt(data) > 0) {
+                                    alert("You are registered.");
+                                    $(location).attr('href', "/index.html");
+                                }
+                                else
+                                    alert("Registration failed.\nPlease contact the administrator.");
+
+                            });
+
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+
+
+
+        });//jq
+
+        function makeNationSelect() {
+            let _tmpVar = "";
+            let nation = new Array('EN', 'CN', 'KR', 'VN');
+
+            _tmpVar += "<option var=''>select your Nation</option>";
+            for (let i = 0; i < nation.length; i++) {
+                // const element = array[i];
+                _tmpVar += "<option var='" + nation[i] + "'>" + nation[i] + "</option>";
+            }
+
+            $("#sel_nation").html(_tmpVar)
+        }
+
+        function chkExistUserID(userID) {
+            let jURL = "/modules/chkUserID.php";
+            let params = { userID: userID };
+            var returnValue = $.ajax({
+                type: "POST",
+                url: jURL,
+                data: params,
+                async: false
+            }).responseText;
+
+            return returnValue;
+        }
+
+
+        function validation() {
+
+            let retState = false;
+
+            let userID = $('#newUserID').val();
+            let userPW = $('#newUserPW').val();
+            let userPWComp = $('#newUserPWComp').val();
+
+            let newUserName = $('#newUserName').val();
+            let newUserEmail = $('#newUserEmail').val();
+            let newUserPhone = $('#newUserPhone').val();
+
+
+            if (userID == "") {
+                alert("enter your ID.");
+                $('#newUserID').focus();
+                retState = false;
+
+            } else if (userPW == "") {
+                alert("enter a password.");
+                $('#newUserPW').focus();
+                retState = false;
+
+            } else if (userPW != userPWComp) {
+                alert("Password verification is different.\n re-enter password confirmation.");
+                $('#newUserPWComp').focus();
+                retState = false;
+
+            } else if (newUserName == "") {
+
+                alert("Input your name.");
+                $('#newUserName').focus();
+                retState = false;
+
+            } else if (newUserPhone == "") {
+                alert("enter your cell phone.");
+                $('#newUserPhone').focus();
+                retState = false;
+
+            } else {
+
+                let _chkEmailState = validateEmail(newUserEmail);
+                let _chkPhoneState = validatePhone(newUserPhone);
+                //  let _chkPasswordState = validatePassword(userPW);
+
+                if (!_chkEmailState) {
+                    alert("enter your email correctly.");
+                    retState = false;
+                } else if (!_chkPhoneState) {
+                    alert("enter your mobile phone number.");
+                    retState = false;
+                    // } else if (!_chkPasswordState) {
+                    //     alert("비밀번호를 정확히 입력 해 주세요.");
+                    //     retState = false;
+
+
+                } else {
+                    retState = true;
+                }
+            }
+            return retState;
+        }
+
+
+        function goHome() {
+            var goUrl = "main.html";
+            $(location).attr('href', goUrl);
+
+        }
+
+
+    </script>
+
+</head>
+
+<body style="padding: 0px; margin: 0px;">
+    <div id="nation">
+        <!-- <div id="" class=" " style="border: none; height: 22px; vertical-align: top; text-align: right;  ">
+            <div id="btn_close" style="float: right;">X</div>
+        </div> -->
+        <div id="EN" class="btn_nation">EN </div>
+        <div id="CN" class="btn_nation">CN </div>
+        <div id="KO" class="btn_nation">KR </div>
+        <div id="VN" class="btn_nation">VN </div>
+    </div>
+    <div id=" "
+        style=" width: 100%; height: 60px; top: 0px; left: 0px; background-color: rgba(55, 43, 226, 0.644); line-height: 60px;">
+        <div id="btn_back"
+            style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;">
+            < </div>
+                <div
+                    style="width: 70%; display: inline-block; text-align: center; vertical-align:top; color: #FFF; font-size: 20px;  ">
+                    ORIENTALCOIN STAKING
+                </div>
+                <div id="btn_menu"
+                    style="width: 10%; display: inline-block;color: #FFF; text-align: center;font-size: 22px;cursor: pointer;float: right;">
+                    <img src='/assets/imgs/btn_globe.png' width='28' />
+                </div>
+
+        </div>
+        <div id="main" style=" width: 90%; margin: 20px auto; font-size: 12px; ">
+
+            <div id="" class=""
+                style=" font-size: 22px; font-weight: bold; padding: 10px 0px; border-bottom: 1px solid #DADADA; color: #fff;">
+                JOIN
+            </div>
+
+
+
+            <div id="" class=""
+                style="width: calc( 98% - 44px); height: auto; padding: 20px 10px 50px; margin: 60px auto; background-color: #FFF;">
+
+
+                <div id="" class=""
+                    style="margin-top: 40px; padding: 20px; font-size: 12px; border: 1px solid #DADADA;">
+                    If you are registered as a OMC member<br />
+                    your password and contact information to verify your membership<br />
+                    If you are a new member, you OMC Wallet wallet is created.<br />
+                    <b>Please keep your password carefully.</b><br />
+                    In case of exposure or loss of password OMC Staking is not responsible.
+                </div>
+                <form name="joinForm_omc" id="joinForm_omc" method="post">
+                    <div id="" class="" style="margin-top: 20px; padding-left: 20px;">
+                        <div id="" class="">
+                            Are you an OMC member??
+                        </div>
+                        <div id="" class="" style="margin-top: 10px; ">
+                            <input type="checkbox" id="chkOmcMember" value="1"> member
+                        </div>
+                    </div>
+
+                    <div id="joinWrapOmc" class="form"
+                        style=" width: calc( 96% - 44px); display: none; margin: 40px auto;">
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="userID" name="userID" style="width: 90%;"
+                                placeholder="Enter your OMC member ID.">
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="password" id="userPW" name="userPW" style="width: 90%;"
+                                placeholder="Enter your OMC member password">
+                        </div>
+
+
+                        <div id="div_chkMemState" class="memState"
+                            style=" padding: 2% 5%; text-align: center; display: none;; margin-top: 14px; color: red; font-weight: bold;">
+                        </div>
+
+                        <div id="btn_chkOmcMember" class="memState" class="divButton"
+                            style="color: #fff; background-color: #5aa3f6; padding: 8px ; text-align: center; display:  block; margin-top: 14px; width: 85%;">
+                            find
+                        </div>
+
+                        <input type="hidden" id="chkMemState" />
+
+
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="userName" name="userName" style="width: 90%; background-color: #FFF;"
+                                readonly>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 6px;">
+                            <input type="text" id="userPhone" name="userPhone"
+                                style="width: 90%;background-color: #FFF;" readonly>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 6px;">
+                            <input type="text" id="userEmail" name="userEmail"
+                                style="width: 90%;background-color: #FFF;" readonly>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 6px;">
+                            <input type="text" id="userNation" name="userNation"
+                                style="width: 90%;background-color: #FFF;" readonly>
+                        </div>
+
+
+                        <div id="btn_join_omc_wrap" class="" style="margin-top: 60px; display: none;">
+
+                            <input type="submit" id="btn_join_omc" name="btn_join_omc" class="divButton" style="width: 90%;
+                                height:40px; line-height:30px; text-align: center;margin: 0px auto;" value=" JOIN " />
+                        </div>
+                    </div>
+                </form>
+                <form name="joinForm" id="joinForm" method="post">
+                    <div id="joinWrap" class="form" style=" margin-top: 40px; padding-left: 15px;">
+                        <div id="" class="" style="margin-top: 1px;">
+                            <input type="text" id="newUserID" name="newUserID" placeholder="User ID"
+                                style="width: 70%;" />
+                            <span id="chkState"><input type="checkbox" id="chkID">double check</span>
+                            <span id="retChkState" style="display: none;">Available</span>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="password" id="newUserPW" name="newUserPW" placeholder="user password"
+                                autocomplete="off" />
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="password" id="newUserPWComp" name="newUserPWComp"
+                                placeholder="Enter the bar number (8 or more uppercase letters, including 1 special character)"
+                                autocomplete="off" />
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="newUserName" name="newUserName" style="width: 90%;"
+                                placeholder="enter your full name">
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+
+                            <select id="sel_nation" name="nation"
+                                style="border: none; padding: 5px; width: 90%; background-color: #EAEAEA;"></select>
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="newUserEmail" name="newUserEmail" style="width: 90%;"
+                                placeholder="enter your email" autocomplete="off" />
+                        </div>
+
+                        <div id="" class="" style="margin-top: 14px;">
+                            <input type="text" id="newUserPhone" name="newUserPhone" style="width: 90%;"
+                                placeholder="enter your cell phone">
+                        </div>
+
+                        <div id="btn_wrap" class="" style="margin: 60px auto; text-align: center; ">
+
+                            <input type="submit" id="btn_join" name="btn_join" class="divButton" style="width: 250px;
+                                height:40px; line-height:30px; text-align: center;" value=" JOIN " />
+
+                        </div>
+
+                        <div id="Wallet_wrap" class="" style="display: none; margin-top: 10px;">
+                            <div id="" class="" style="margin-top: 10px; ">wallet address</div>
+                            <div id="Wallet_addr" class=""
+                                style="margin-top: 10px; padding: 10px; background-color: #DADADA;">
+                                0x1234567890-</div>
+                            <div id="" class=""
+                                style="margin-top: 40px; padding: 20px; font-size: 12px; border: 1px solid #DADADA;">
+                                <b>Congratulations.</b><br />
+                                have been registered as an OMC member.<br />
+                                If you are a new member, you have signed up to create an OMC Wallet wallet.<br />
+                                <b>Please keep your wallet address.</b><br />
+
+                            </div>
+
+                            <div id="" class="" style="margin: 60px auto; text-align: center; ">
+                                <input type="button" id="btn_join" name="btn_join" class="divButton" style="width: 250px;
+                                    height:40px; line-height:30px; text-align: center;" value=" Go HOME "
+                                    onclick="goHome()" />
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+    <input type="hidden" id="isUseChkID" />
+</body>
+
+</html>
